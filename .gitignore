@@ -1,0 +1,19 @@
+# Isaac Sim junk
+*.log
+*.cache
+*.tmp
+
+# USD temp
+*.usd~
+
+# ROS2
+ros2_ws/build/
+ros2_ws/install/
+ros2_ws/log/
+
+# Python
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
