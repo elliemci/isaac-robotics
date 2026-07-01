@@ -102,19 +102,28 @@ class CommandsCfg:
 
     ee_pose = mdp.UniformPoseCommandCfg(
         asset_name="robot",
-        body_name="wrist_3_link", # This is the body in the USD file
+        body_name="ee_link", # "wrist_3_link"
         resampling_time_range=(4.0, 4.0),
         debug_vis=True,
         # ranges of poses that can be commanded for the end of the robot during training; whring command range for debugging
         ranges=mdp.UniformPoseCommandCfg.Ranges(
-            pos_x=(0.45, 0.55),
-            pos_y=(-0.05, 0.05),
-            pos_z=(0.2, 0.35),
-            roll=(0.0, 0.0),
-            pitch=(math.pi / 2, math.pi / 2),
-            yaw=(0, 0), #remove orientation for debugging (-3.14, 3.14)
+            #pos_x=(0.45, 0.55),
+            #pos_y=(-0.05, 0.05),
+            #pos_z=(0.2, 0.35),
+            # for debugging of orientation learning, fix the commanded possition not allowing the robot to move over a volume of space
+            pos_x=(0.45, 0.45),
+            pos_y=(0.05, 0.05),
+            pos_z=(0.2, 0.2),
+
+            # check if from the Euler angles of (0.2, 0.3, 0.4) the reconstructed quaternion matches the original or is different by a sign
+            roll=(0.2, 0.2),
+            pitch=(0.3, 0.3), # (math.pi / 2, math.pi / 2),
+            yaw=(0.4, 0.4)   # to test with one orientation (-math.pi, math.pi)    # remove orientation for debugging; yaw=(-math.pi, math.pi)
         ),
     )
+
+    print("\nCreating CommandsCfg")
+    print("Pitch =", ee_pose.ranges.pitch)
 
 @configclass
 class ObservationsCfg:
@@ -172,27 +181,28 @@ class RewardsCfg:
     end_effector_position_tracking = RewTerm(
         func=mdp.position_command_error,
         weight=-0.2,  # increase pulls the arm out of hanging position towards the goal
-        params={"asset_cfg": SceneEntityCfg("robot", body_names=["wrist_3_link"]), "command_name": "ee_pose"},
-    )
+        params={"asset_cfg": SceneEntityCfg("robot", body_names=["ee_link"]), "command_name": "ee_pose"},
+    )  # params={"asset_cfg": SceneEntityCfg("robot", body_names=["wrist_3_link"]), "command_name": "ee_pose"},
+
     
     # since Tanh is bounded (0 to 1), a positive weight here acts as an attractor bubble
     end_effector_position_tracking_fine_grained = RewTerm(
         func=mdp.position_command_error_tanh,
-        weight=0.5, # 0.1, accuracy bonus
+        weight=0.1, # 0.1, accuracy bonus
         params={"asset_cfg": SceneEntityCfg("robot", body_names=["ee_link"]), "std": 0.2, "command_name": "ee_pose"},
     )
 
     end_effector_orientation_tracking = RewTerm(
         func=mdp.orientation_command_error,
-        weight=0, # -0.2 Force the gripper to rotate, a 90 degree error triggers a noticble -3.14 penalty while stopu paralyzis of the arm from a distance
-        params={"asset_cfg": SceneEntityCfg("robot", body_names=["wrist_3_link"]), "command_name": "ee_pose"},
+        weight=-0.002, # -0.2 Force the gripper to rotate, a 90 degree error triggers a noticble -3.14 penalty while stopu paralyzis of the arm from a distance
+        params={"asset_cfg": SceneEntityCfg("robot", body_names=["ee_link"]), "command_name": "ee_pose"},
     )
 
     # the same tanh logic as position to give a +3.0 bonus when the angle is within ~15 degrees (0.25 rad)
     #end_effector_orientation_tracking_fine_grained = RewTerm(
         #func=mdp.position_command_error_tanh, # Re-uses the clean exponential decay wrapper
-        #weight=3, # <--- Extra reward for locking in the rotation angle
-        #params={"asset_cfg": SceneEntityCfg("robot", body_names=["wrist_3_link"]), "std": 0.25, "command_name": "ee_pose"},
+        #weight=0.03, # <--- Extra reward for locking in the rotation angle
+        #params={"asset_cfg": SceneEntityCfg("robot", body_names=["ee_link"]), "std": 0.25, "command_name": "ee_pose"},
     #)
     
     # allow the arm to move forward without being paralaysed by penalties; 
@@ -307,10 +317,10 @@ class UR10ReachEnvCfg(ReachEnvCfg):
         # override events
         self.events.reset_robot_joints.params["position_range"] = (0.75, 1.25)
         
-        # --- FIX THESE FOUR LINES TO USE WRIST_3_LINK ---
-        self.rewards.end_effector_position_tracking.params["asset_cfg"].body_names = ["wrist_3_link"]
-        self.rewards.end_effector_position_tracking_fine_grained.params["asset_cfg"].body_names = ["wrist_3_link"]
-        self.rewards.end_effector_orientation_tracking.params["asset_cfg"].body_names = ["wrist_3_link"]
+        # --- FIX THESE FOUR LINES TO USE WRIST_3_LINK ???---
+        self.rewards.end_effector_position_tracking.params["asset_cfg"].body_names = ["ee_link"]
+        self.rewards.end_effector_position_tracking_fine_grained.params["asset_cfg"].body_names = ["ee_link"]
+        self.rewards.end_effector_orientation_tracking.params["asset_cfg"].body_names = ["ee_link"]
         
         # override actions
         self.actions.arm_action = mdp.JointPositionActionCfg(
