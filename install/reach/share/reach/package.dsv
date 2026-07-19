@@ -1,0 +1,3 @@
+source;share/reach/hook/pythonpath.ps1
+source;share/reach/hook/pythonpath.dsv
+source;share/reach/hook/pythonpath.sh

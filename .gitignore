@@ -6,6 +6,10 @@
 # USD temp
 *.usd~
 
+# Ignore huge cache files if generated
+*.usd.bak
+
+
 # ROS2
 ros2_ws/build/
 ros2_ws/install/

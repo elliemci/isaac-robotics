@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: reach
+Version: 0.1.0
+Summary: Extension Template for Isaac Lab
+Home-page: https://github.com/isaac-sim/IsaacLab.git
+Author: Isaac Lab Project Developers
+Maintainer: Isaac Lab Project Developers
+License: Apache-2.0
+Keywords: extension,template,isaaclab
+Platform: UNKNOWN
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Isaac Sim :: 4.5.0
+Classifier: Isaac Sim :: 5.0.0
+Classifier: Isaac Sim :: 5.1.0
+Requires-Python: >=3.10
+
+UNKNOWN
+

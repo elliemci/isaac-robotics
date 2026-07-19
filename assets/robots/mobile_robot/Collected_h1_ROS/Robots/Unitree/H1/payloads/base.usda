@@ -1,0 +1,583 @@
+#usda 1.0
+(
+    customLayerData = {
+        dictionary cameraSettings = {
+            dictionary Front = {
+                double3 position = (5, 0, 0)
+                double radius = 5
+            }
+            dictionary Perspective = {
+                double3 position = (0.42384544982878114, 0.4238552547928467, 0.3853302330528933)
+                double3 target = (-0.000009804964065718291, -5.551115123125783e-17, -0.03852501162327837)
+            }
+            dictionary Right = {
+                double3 position = (0, -5, 0)
+                double radius = 5
+            }
+            dictionary Top = {
+                double3 position = (0, 0, 5)
+                double radius = 5
+            }
+            string boundCamera = "/OmniverseKit_Persp"
+        }
+        dictionary omni_layer = {
+            string authoring_layer = "./base.usda"
+            dictionary locked = {
+            }
+            dictionary muteness = {
+            }
+        }
+        dictionary renderSettings = {
+        }
+    }
+    defaultPrim = "h1"
+    doc = """Generated from Composed Stage of root layer /home/stevfeng/Downloads/unitree_ros/robots/h1_description/urdf/h1/h1.usd
+"""
+    endTimeCode = 0
+    metersPerUnit = 1
+    startTimeCode = -1
+    timeCodesPerSecond = 60
+    upAxis = "Z"
+)
+
+def Xform "h1"
+{
+    quatd xformOp:orient = (1, 0, 0, 0)
+    double3 xformOp:scale = (1, 1, 1)
+    double3 xformOp:translate = (0, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+    def Xform "pelvis" (
+        apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (-0.0002, 0.00004, -0.04522)
+        float3 physics:diagonalInertia = (0.04458212, 0.008246193, 0.049021088)
+        float physics:mass = 5.39
+        quatf physics:principalAxes = (0.9999968, -0.000047209065, -0.0022397172, 0.0011977674)
+        quatd xformOp:orient = (1, 0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @./geometries.usd@</meshes/pelvis>
+        )
+        {
+            quatd xformOp:orient = (1, 0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+    }
+
+    def Xform "left_hip_yaw_link" (
+        apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (-0.04923, 0.0001, 0.0072)
+        float3 physics:diagonalInertia = (0.0029688515, 0.0030449356, 0.0018920124)
+        float physics:mass = 2.244
+        quatf physics:principalAxes = (0.94657356, -0.00996608, 0.31995144, -0.03911884)
+        quatd xformOp:orient = (1, 0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0.08749999850988388, -0.17419999837875366)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @./geometries.usd@</meshes/left_hip_yaw_link>
+        )
+        {
+            quatd xformOp:orient = (1, 0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+    }
+
+    def Xform "left_hip_roll_link" (
+        apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (-0.0058, -0.00319, -0.00009)
+        float3 physics:diagonalInertia = (0.0020549176, 0.002253245, 0.002432637)
+        float physics:mass = 2.232
+        quatf physics:principalAxes = (0.9963683, 0.020564958, 0.0037783533, -0.08254194)
+        quatd xformOp:orient = (1, 0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0.03946800157427788, 0.08749999850988388, -0.17419999837875366)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @./geometries.usd@</meshes/left_hip_roll_link>
+        )
+        {
+            quatd xformOp:orient = (1, 0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+    }
+
+    def Xform "left_hip_pitch_link" (
+        apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (0.00746, -0.02346, -0.08193)
+        float3 physics:diagonalInertia = (0.08295033, 0.08214567, 0.0051090913)
+        float physics:mass = 4.152
+        quatf physics:principalAxes = (0.979828, 0.051352248, -0.016985333, -0.19238399)
+        quatd xformOp:orient = (1, 0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0.03946800157427788, 0.2028599977493286, -0.17419999837875366)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @./geometries.usd@</meshes/left_hip_pitch_link>
+        )
+        {
+            quatd xformOp:orient = (1, 0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+    }
+
+    def Xform "left_knee_link" (
+        apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (-0.00136, -0.00512, -0.1384)
+        float3 physics:diagonalInertia = (0.012310395, 0.012523702, 0.0019428049)
+        float physics:mass = 1.721
+        quatf physics:principalAxes = (0.99276686, 0.0052330783, -0.05363738, 0.10728284)
+        quatd xformOp:orient = (1, 0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0.03946800157427788, 0.2028599977493286, -0.5742000341415405)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @./geometries.usd@</meshes/left_knee_link>
+        )
+        {
+            quatd xformOp:orient = (1, 0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+    }
+
+    def Xform "left_ankle_link" (
+        apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (0.042575, -0.000001, -0.044672)
+        float3 physics:diagonalInertia = (0.00015216829, 0.002900286, 0.0028129376)
+        float physics:mass = 0.474
+        quatf physics:principalAxes = (0.9996474, 0.000078506244, 0.026554713, -0.0000010414184)
+        quatd xformOp:orient = (1, 0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0.03946800157427788, 0.2028599977493286, -0.9742000102996826)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @./geometries.usd@</meshes/left_ankle_link>
+        )
+        {
+            quatd xformOp:orient = (1, 0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+    }
+
+    def Xform "right_hip_yaw_link" (
+        apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (-0.04923, -0.0001, 0.0072)
+        float3 physics:diagonalInertia = (0.0029688515, 0.0030449356, 0.0018920124)
+        float physics:mass = 2.244
+        quatf physics:principalAxes = (0.94657356, 0.00996608, 0.31995144, 0.03911884)
+        quatd xformOp:orient = (1, 0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, -0.08749999850988388, -0.17419999837875366)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @./geometries.usd@</meshes/right_hip_yaw_link>
+        )
+        {
+        }
+    }
+
+    def Xform "right_hip_roll_link" (
+        apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (-0.0058, 0.00319, -0.00009)
+        float3 physics:diagonalInertia = (0.0020549176, 0.002253245, 0.002432637)
+        float physics:mass = 2.232
+        quatf physics:principalAxes = (0.9963683, -0.020564958, 0.0037783533, 0.08254194)
+        quatd xformOp:orient = (1, 0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0.03946800157427788, -0.08749999850988388, -0.17419999837875366)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @./geometries.usd@</meshes/right_hip_roll_link>
+        )
+        {
+        }
+    }
+
+    def Xform "right_hip_pitch_link" (
+        apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (0.00746, 0.02346, -0.08193)
+        float3 physics:diagonalInertia = (0.08295033, 0.08214567, 0.0051090913)
+        float physics:mass = 4.152
+        quatf physics:principalAxes = (0.979828, -0.051352248, -0.016985333, 0.19238399)
+        quatd xformOp:orient = (1, 0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0.03946800157427788, -0.2028599977493286, -0.17419999837875366)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @./geometries.usd@</meshes/right_hip_pitch_link>
+        )
+        {
+        }
+    }
+
+    def Xform "right_knee_link" (
+        apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (-0.00136, 0.00512, -0.1384)
+        float3 physics:diagonalInertia = (0.012310395, 0.012523702, 0.0019428049)
+        float physics:mass = 1.721
+        quatf physics:principalAxes = (0.99276686, -0.0052330783, -0.05363738, -0.10728284)
+        quatd xformOp:orient = (1, 0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0.03946800157427788, -0.2028599977493286, -0.5742000341415405)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @./geometries.usd@</meshes/right_knee_link>
+        )
+        {
+        }
+    }
+
+    def Xform "right_ankle_link" (
+        apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (0.042575, 0.000001, -0.044672)
+        float3 physics:diagonalInertia = (0.00015216829, 0.002900286, 0.0028129376)
+        float physics:mass = 0.474
+        quatf physics:principalAxes = (0.9996474, -0.000078506244, 0.026554713, 0.0000010414184)
+        quatd xformOp:orient = (1, 0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0.03946800157427788, -0.2028599977493286, -0.9742000102996826)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @./geometries.usd@</meshes/right_ankle_link>
+        )
+        {
+        }
+    }
+
+    def Xform "torso_link" (
+        apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (0.000489, 0.002797, 0.20484)
+        float3 physics:diagonalInertia = (0.48731524, 0.40962818, 0.1278366)
+        float physics:mass = 17.789
+        quatf physics:principalAxes = (0.99998915, -0.0013081023, -0.0028228867, -0.003491047)
+        quatd xformOp:orient = (1, 0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @./geometries.usd@</meshes/torso_link>
+        )
+        {
+        }
+    }
+
+    def Xform "d435_left_imager_link" (
+        apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        float physics:mass = 0.000001
+        quatd xformOp:orient = (0.23722416162490845, -0.6661252975463867, 0.6661276817321777, -0.2372250258922577)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0.10848474502563477, 0.017500000074505806, 0.6931710839271545)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @./geometries.usd@</meshes/d435_left_imager_link>
+        )
+        {
+        }
+    }
+
+    def Xform "d435_rgb_module_link" (
+        apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        float physics:mass = 0.000001
+        quatd xformOp:orient = (0.23722416162490845, -0.6661252975463867, 0.6661276817321777, -0.2372250258922577)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0.10848474502563477, 0.032499998807907104, 0.6931710839271545)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @./geometries.usd@</meshes/d435_rgb_module_link>
+        )
+        {
+        }
+    }
+
+    def Xform "imu_link" (
+        apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        float3 physics:diagonalInertia = (0.00001, 0.00001, 0.00001)
+        float physics:mass = 0.000001
+        quatd xformOp:orient = (1, 0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (-0.044520001858472824, -0.01891000010073185, 0.2775599956512451)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def Xform "left_shoulder_pitch_link" (
+        apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (0.005045, 0.053657, -0.015715)
+        float3 physics:diagonalInertia = (0.0012993595, 0.00085819757, 0.000987113)
+        float physics:mass = 1.033
+        quatf physics:principalAxes = (0.9857733, -0.16661035, -0.0075959545, -0.020839892)
+        quatd xformOp:orient = (0.9762962460517883, 0.21643848717212677, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0.005499999970197678, 0.155349999666214, 0.4299899935722351)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @./geometries.usd@</meshes/left_shoulder_pitch_link>
+        )
+        {
+        }
+    }
+
+    def Xform "left_shoulder_roll_link" (
+        apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (0.000679, 0.00115, -0.094076)
+        float3 physics:diagonalInertia = (0.0015825586, 0.0017038822, 0.0010033592)
+        float physics:mass = 0.793
+        quatf physics:principalAxes = (0.99622494, -0.047725365, 0.060696196, -0.039674755)
+        quatd xformOp:orient = (1, 0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0.21352961659431458, 0.4389137029647827)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @./geometries.usd@</meshes/left_shoulder_roll_link>
+        )
+        {
+        }
+    }
+
+    def Xform "left_shoulder_yaw_link" (
+        apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (0.01365, 0.002767, -0.16266)
+        float3 physics:diagonalInertia = (0.0037036669, 0.004080375, 0.0006226872)
+        float physics:mass = 0.839
+        quatf physics:principalAxes = (0.9983215, 0.010050264, -0.056893215, 0.0040697176)
+        quatd xformOp:orient = (1, 0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0.21352961659431458, 0.30461370944976807)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @./geometries.usd@</meshes/left_shoulder_yaw_link>
+        )
+        {
+        }
+    }
+
+    def Xform "left_elbow_link" (
+        apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (0.164862, 0.000118, -0.015734)
+        float3 physics:diagonalInertia = (0.00040830488, 0.0060057878, 0.0060182875)
+        float physics:mass = 0.723
+        quatf physics:principalAxes = (0.99308085, -0.11443613, 0.025614899, 0.006214754)
+        quatd xformOp:orient = (1, 0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0.01850000023841858, 0.21352961659431458, 0.10661371052265167)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @./geometries.usd@</meshes/left_elbow_link>
+        )
+        {
+        }
+    }
+
+    def Xform "logo_link" (
+        apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        float3 physics:diagonalInertia = (0.00001, 0.00001, 0.00001)
+        float physics:mass = 0.000001
+        quatd xformOp:orient = (1, 0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @./geometries.usd@</meshes/logo_link>
+        )
+        {
+        }
+    }
+
+    def Xform "mid360_link" (
+        apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        float physics:mass = 0.000001
+        quatd xformOp:orient = (0.9926204085350037, 0, 0.12126282602548599, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0.04729990288615227, 0, 0.6749287843704224)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @./geometries.usd@</meshes/mid360_link>
+        )
+        {
+        }
+    }
+
+    def Xform "right_shoulder_pitch_link" (
+        apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (0.005045, -0.053657, -0.015715)
+        float3 physics:diagonalInertia = (0.0012993595, 0.00085819757, 0.000987113)
+        float physics:mass = 1.033
+        quatf physics:principalAxes = (0.9857733, 0.16661035, -0.0075959545, 0.020839892)
+        quatd xformOp:orient = (0.9762962460517883, -0.21643848717212677, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0.005499999970197678, -0.155349999666214, 0.4299899935722351)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @./geometries.usd@</meshes/right_shoulder_pitch_link>
+        )
+        {
+        }
+    }
+
+    def Xform "right_shoulder_roll_link" (
+        apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (0.000679, -0.00115, -0.094076)
+        float3 physics:diagonalInertia = (0.0015825586, 0.0017038822, 0.0010033592)
+        float physics:mass = 0.793
+        quatf physics:principalAxes = (0.99622494, 0.047725365, 0.060696196, 0.039674755)
+        quatd xformOp:orient = (1, 0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, -0.21352961659431458, 0.4389137029647827)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @./geometries.usd@</meshes/right_shoulder_roll_link>
+        )
+        {
+        }
+    }
+
+    def Xform "right_shoulder_yaw_link" (
+        apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (0.01365, -0.002767, -0.16266)
+        float3 physics:diagonalInertia = (0.0037036669, 0.004080375, 0.0006226872)
+        float physics:mass = 0.839
+        quatf physics:principalAxes = (0.9983215, -0.010050264, -0.056893215, -0.0040697176)
+        quatd xformOp:orient = (1, 0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, -0.21352961659431458, 0.30461370944976807)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @./geometries.usd@</meshes/right_shoulder_yaw_link>
+        )
+        {
+        }
+    }
+
+    def Xform "right_elbow_link" (
+        apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        point3f physics:centerOfMass = (0.164862, -0.000118, -0.015734)
+        float3 physics:diagonalInertia = (0.00040830488, 0.0060057878, 0.0060182875)
+        float physics:mass = 0.723
+        quatf physics:principalAxes = (0.99308085, 0.11443613, 0.025614899, -0.006214754)
+        quatd xformOp:orient = (1, 0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0.01850000023841858, -0.21352961659431458, 0.10661371052265167)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @./geometries.usd@</meshes/right_elbow_link>
+        )
+        {
+        }
+    }
+
+    def Scope "Joints"
+    {
+    }
+}
+

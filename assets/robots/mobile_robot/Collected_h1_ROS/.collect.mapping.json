@@ -1,0 +1,29 @@
+{
+    "version": "1.0",
+    "file_records": [
+        {
+            "source_url": "/home/elliemcintosh/Documents/sil_digital_twin/h1_ROS/Robots/Unitree/H1/payloads/h1_hand_left.usd",
+            "source_hash": "5765e5e40562d5c02de1c936452778f3130fc1d2",
+            "target_url": "./Robots/Unitree/H1/payloads/h1_hand_left.usd",
+            "target_hash": "e29d630daadc36d2d30febebe22c7fd9d0177810"
+        },
+        {
+            "source_url": "/home/elliemcintosh/Documents/sil_digital_twin/h1_ROS/Robots/Unitree/H1/payloads/h1_hand_right.usd",
+            "source_hash": "84e9526fbb758d60ee4005909f711eb514653aa8",
+            "target_url": "./Robots/Unitree/H1/payloads/h1_hand_right.usd",
+            "target_hash": "93b1db757292020d35d1fb27140f5f24d454782a"
+        },
+        {
+            "source_url": "/home/elliemcintosh/Documents/sil_digital_twin/h1_ROS/Robots/Unitree/H1/payloads/physics_45.usda",
+            "source_hash": "71f00340a957c22d08dda5f2fbe72c1ad841e8ea",
+            "target_url": "./Robots/Unitree/H1/payloads/physics_45.usda",
+            "target_hash": "ddc336b96e6b571975be4e217a068938a18f9cfe"
+        },
+        {
+            "source_url": "/home/elliemcintosh/Documents/sil_digital_twin/h1_ROS/Robots/Unitree/H1/payloads/physics_minimal.usda",
+            "source_hash": "e2bc6d48aef9c94c00ea7f6a8f3e3261be2213db",
+            "target_url": "./Robots/Unitree/H1/payloads/physics_minimal.usda",
+            "target_hash": "f1ce5659af03d6ae787e435fc7cb53bfb20a6c4e"
+        }
+    ]
+}
