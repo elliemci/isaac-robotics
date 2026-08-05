@@ -10,7 +10,7 @@
 *.usd.bak
 
 
-# ROS2
+# Do not commit build artifacts generated when running colcon ROS2
 ros2_ws/build/
 ros2_ws/install/
 ros2_ws/log/
@@ -21,3 +21,17 @@ __pycache__/
 
 # OS
 .DS_Store
+
+# Isaac Sim generated files
+*.collect.mapping.json
+*.log
+
+# Isaac Sim collected assets
+assets/robots/mobile_robot/Collected_warehouse_test_scene/home/
+
+# Large collected assets
+sim_interfaces_assets/
+
+# Isaac Sim cache
+.kit/
+__pycache__/

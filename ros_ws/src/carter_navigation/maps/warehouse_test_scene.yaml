@@ -1,0 +1,15 @@
+image: warehouse_test_scene.png
+mode: trinary
+resolution: 0.05
+origin: [-11.975, -17.975, 0.0000]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.196
+
+# image: warehouse_test_scene.png
+# resolution: 0.05
+# origin: [-11.924999809265136, -20.825000381469728, 0.0000]
+# negate: 0 
+# occupied_thresh: 0.65
+# free_thresh: 0.196
+
