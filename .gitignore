@@ -1,37 +1,45 @@
-# Isaac Sim junk
-*.log
-*.cache
-*.tmp
+# Python & Bytecode
+__pycache__/
+*.pyc
+*.cpython-*.so
+*.so
 
-# USD temp
-*.usd~
+# OS & Environment
+.DS_Store
+.claude/settings.json
 
-# Ignore huge cache files if generated
-*.usd.bak
-
-
-# Do not commit build artifacts generated when running colcon ROS2
+# ROS & ROS 2 Build Artifacts
+build/
+install/
+log/
+ros_ws/build/
+ros_ws/install/
+ros_ws/log/
 ros2_ws/build/
 ros2_ws/install/
 ros2_ws/log/
 
-# Python
-__pycache__/
-*.pyc
+# ROS 2 Debug Files & Graphviz
+*.gv
+*.pdf
 
-# OS
-.DS_Store
-
-# Isaac Sim generated files
-*.collect.mapping.json
+# Isaac Sim & USD Caches / Temp Files
 *.log
+*.cache
+*.tmp
+*.usd~
+*.usd.bak
+*.collect.mapping.json
+.kit/
 
-# Isaac Sim collected assets
+# Large Collected Assets & Datasets
 assets/robots/mobile_robot/Collected_warehouse_test_scene/home/
-
-# Large collected assets
 sim_interfaces_assets/
 
-# Isaac Sim cache
-.kit/
-__pycache__/
+# Node & Build Outputs
+node_modules/
+dist/
+
+# Miscellaneous Root Temporary Files
+apt-get
+update
