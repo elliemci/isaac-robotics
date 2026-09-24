@@ -1,0 +1,591 @@
+#usda 1.0
+
+over "Root"
+{
+    over "Geometry"
+    {
+        over "Floor" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "Floor"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "LightBlocker" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "LightBlocker"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "LightBlocker_01" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "LightBlocker_01"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "ball_457" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "ball_457"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "bear_2" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "bear_2"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "blanket_b_459" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "blanket_b_459"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "blanket_fort_461" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "blanket_fort_461"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "blocks_463" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "blocks_463"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "book_shelf_467" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "book_shelf_467"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "books_465" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "books_465"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "box_469" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "box_469"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "chair_471" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "chair_471"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "chest_473" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "chest_473"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "clock_475" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "clock_475"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "colored_balls_477" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "colored_balls_477"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "couch_479" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "couch_479"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "curtain_481" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "curtain_481"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "dart_board_483" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "dart_board_483"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "file_cab_485" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "file_cab_485"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "fishing_net_487" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "fishing_net_487"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "floor2_6" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "floor2_6"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "floor3" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "floor3"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "football_489" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "football_489"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "frame2_493" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "frame2_493"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "frame_491" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "frame_491"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "glass2_14" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "glass2_14"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "glass3_17" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "glass3_17"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "glass_495" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "glass_495"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "glass_mug_5" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "glass_mug_5"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "grama_497" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "grama_497"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "horse_499" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "horse_499"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "insolation_501" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "insolation_501"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "jar_lid_503" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "jar_lid_503"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "magazine_505" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "magazine_505"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "metal_ball_507" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "metal_ball_507"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "mirror2_509" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "mirror2_509"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "painting_511" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "painting_511"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "paper_513" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "paper_513"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "piano_515" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "piano_515"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "picture_frame_517" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "picture_frame_517"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "pipes_519" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "pipes_519"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "rug_521" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "rug_521"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "shelf_523" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "shelf_523"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "side_table_525" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "side_table_525"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "star_ball_529" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "star_ball_529"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "stars_527" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "stars_527"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "string_531" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "string_531"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "string_lights_533" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "string_lights_533"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "table_cloth_535" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "table_cloth_535"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "table_light_2" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "table_light_2"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "telescope_537" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "telescope_537"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "tennis_ball_539" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "tennis_ball_539"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "tv_541" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "tv_541"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "window2" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "window2"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "window_8" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "window_8"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "wood_walls2" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "wood_walls2"
+            string semantic:label:params:semanticType = "label"
+        }
+
+        over "wood_walls_2" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "attic_environment"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "wood_walls_2"
+            string semantic:label:params:semanticType = "label"
+        }
+
+    }
+
+    over "Workshop"
+    {
+        over "Cube" (
+            prepend apiSchemas = ["SemanticsAPI:label", "SemanticsAPI:class"]
+        )
+        {
+            string semantic:class:params:semanticData = "retrieval_target"
+            string semantic:class:params:semanticType = "class"
+            string semantic:label:params:semanticData = "memory_cube"
+            string semantic:label:params:semanticType = "label"
+        }
+    }
+}

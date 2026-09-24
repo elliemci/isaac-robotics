@@ -12,12 +12,25 @@ __pycache__/
 build/
 install/
 log/
+
 ros_ws/build/
 ros_ws/install/
 ros_ws/log/
 ros2_ws/build/
 ros2_ws/install/
 ros2_ws/log/
+
+# Generated ROS 2 interface code bindings
+*_s.c
+*_c.c
+ros_ws/src/*/_*.py
+ros_ws/src/*/*/_*.py
+ros_ws/src/*/*/*/_*.py
+
+# C / C++ build outputs
+*.o
+*.so
+*.a
 
 # ROS 2 Debug Files & Graphviz
 *.gv
@@ -43,3 +56,11 @@ dist/
 # Miscellaneous Root Temporary Files
 apt-get
 update
+
+# Attic Portal Runtime Binaries
+physical_ai_agent/Attic_Portal/.tools/
+physical_ai_agent/Attic_Portal/frontend/node_modules/
+physical_ai_agent/Attic_Portal/vendor/ovstream/examples/c/starfield_stream/data/
+
+# Ignore all unnecessary third-party Claude marketplace plugins
+physical_ai_agent/.claude/plugins/marketplaces/

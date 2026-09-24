@@ -1,0 +1,75 @@
+{
+  "beauty": {
+    "state": "BEAUTY",
+    "artifact": "/home/elliemcintosh/Documents/physical_ai_agent/RTXViewport/Attic_Portal/artifacts/r17-beauty-mode.png"
+  },
+  "semantic": {
+    "state": "SEMANTIC",
+    "artifact": "/home/elliemcintosh/Documents/physical_ai_agent/RTXViewport/Attic_Portal/artifacts/r17-semantic-mode.png",
+    "diffMean": 127.46043873488094
+  },
+  "outputs": [
+    "LdrColor",
+    "SemanticIdMap",
+    "SemanticSegmentation"
+  ],
+  "semanticsLayer": "/home/elliemcintosh/Documents/physical_ai_agent/RTXViewport/Attic_Portal/usd/R17_Semantics.usda",
+  "semanticIdMapEntries": 58,
+  "semanticUniqueIds": [
+    2,
+    3,
+    5,
+    7,
+    8,
+    10,
+    11,
+    15,
+    20,
+    21,
+    23,
+    24,
+    26,
+    27,
+    28,
+    30,
+    31,
+    34,
+    35,
+    36,
+    37,
+    38,
+    41,
+    43,
+    45,
+    46,
+    49,
+    50,
+    53,
+    55,
+    56,
+    59
+  ],
+  "semanticNonzeroPixels": 518400,
+  "cubeSemanticClass": "retrieval_target",
+  "cubeSemanticLabel": "memory_cube",
+  "modeSwitches": [
+    "BEAUTY",
+    "SEMANTIC",
+    "BEAUTY",
+    "SEMANTIC",
+    "BEAUTY"
+  ],
+  "rendererOwnerCounts": [
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "videoTracks": 1,
+  "protectedSourceHashes": {
+    "Attic_NVIDIA.usd": "12db25c282bcf57ba371381d96c5ea11dd0709386493b27e99b2c6c70992502c",
+    "OldAttic_Mission.usda": "80b9adfcef7a587caddd0eb04dfa85d84baff52f4bb80712d9f19bad29657739"
+  },
+  "finalMode": "BEAUTY"
+}

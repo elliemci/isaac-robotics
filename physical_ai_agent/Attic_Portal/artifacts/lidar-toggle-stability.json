@@ -1,0 +1,70 @@
+{
+  "stateUrl": "http://127.0.0.1:8082/state.json",
+  "cycles": [
+    {
+      "cycle": 1,
+      "on": {
+        "status": "READY",
+        "validPointCount": 422196,
+        "nearestRange": 2.4543721801205933,
+        "nonvisualMaterialCount": 103,
+        "outputKeys": [
+          "PointCloud"
+        ]
+      },
+      "off": {
+        "status": "DISABLED",
+        "validPointCount": null,
+        "nearestRange": null
+      }
+    },
+    {
+      "cycle": 2,
+      "on": {
+        "status": "READY",
+        "validPointCount": 422224,
+        "nearestRange": 2.454382249954783,
+        "nonvisualMaterialCount": 103,
+        "outputKeys": [
+          "PointCloud"
+        ]
+      },
+      "off": {
+        "status": "DISABLED",
+        "validPointCount": null,
+        "nearestRange": null
+      }
+    },
+    {
+      "cycle": 3,
+      "on": {
+        "status": "READY",
+        "validPointCount": 422163,
+        "nearestRange": 2.454347283376351,
+        "nonvisualMaterialCount": 103,
+        "outputKeys": [
+          "PointCloud"
+        ]
+      },
+      "off": {
+        "status": "DISABLED",
+        "validPointCount": null,
+        "nearestRange": null
+      }
+    }
+  ],
+  "rendererOwnerCounts": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "serverProcess": "18835:248198",
+  "webrtcConnections": 5,
+  "stageOpenCount": 1,
+  "streamStartCount": 1,
+  "pass": true
+}

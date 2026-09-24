@@ -1,0 +1,228 @@
+{
+  "url": "http://127.0.0.1:5176/?server=127.0.0.1&signalingport=49101",
+  "stateUrl": "http://127.0.0.1:8082/state.json",
+  "headless": true,
+  "cameraLayer": "/home/elliemcintosh/Documents/physical_ai_agent/RTXViewport/Attic_Portal/usd/R17_Camera.usda",
+  "video": {
+    "readyState": 4,
+    "width": 960,
+    "height": 540,
+    "paused": false
+  },
+  "videoTracks": 1,
+  "panelFocusCamera": "/Session/Cameras/R17CubeFocus",
+  "viewButtonLabels": [
+    "CUBE FOCUS",
+    "DEFAULT VIEW"
+  ],
+  "initial": {
+    "activeView": "DEFAULT",
+    "camera": {
+      "azimuth": 0.0,
+      "elevation": 0.34,
+      "distance": 455.0,
+      "target": [
+        -620.0,
+        -1125.0,
+        121.0
+      ]
+    },
+    "lens": {
+      "target": [
+        -620.0,
+        -1125.0,
+        121.0
+      ],
+      "distance": 455.0,
+      "azimuth": 0.0,
+      "elevation": 0.34,
+      "focalLength": 24.0,
+      "horizontalAperture": 20.955,
+      "verticalAperture": 11.787187499999998,
+      "clippingRange": [
+        1.0,
+        10000000.0
+      ]
+    }
+  },
+  "envelope": {
+    "boundsMin": [
+      -655.0,
+      -1145.0,
+      101.0
+    ],
+    "boundsMax": [
+      -585.0,
+      -1105.0,
+      141.0
+    ],
+    "span": [
+      70.0,
+      40.0,
+      40.0
+    ],
+    "homeTranslate": [
+      -620.0,
+      -1125.0,
+      121.0
+    ]
+  },
+  "cubeFocus": {
+    "activeView": "CUBE_FOCUS",
+    "boundsMin": [
+      -655.0,
+      -1145.0,
+      101.0
+    ],
+    "boundsMax": [
+      -585.0,
+      -1105.0,
+      141.0
+    ],
+    "maxAbsX": 0.12771621212124637,
+    "maxAbsY": 0.09793994350632476,
+    "minDepth": 288.45257876300866,
+    "horizontalFill": 0.42663492476675,
+    "verticalFill": 0.5816312029856769,
+    "lens": {
+      "target": [
+        -620.0,
+        -1125.0,
+        121.0
+      ],
+      "distance": 322.1799816563889,
+      "azimuth": 0.24497866312686414,
+      "elevation": 0.43580710181796684,
+      "focalLength": 35.0,
+      "horizontalAperture": 20.955,
+      "verticalAperture": 11.787187499999998,
+      "clippingRange": [
+        1.0,
+        10000000.0
+      ]
+    }
+  },
+  "cubeFocusVisual": {
+    "artifact": "/home/elliemcintosh/Documents/physical_ai_agent/RTXViewport/Attic_Portal/artifacts/r17-cube-focus-visual.png",
+    "crop": [
+      0,
+      0,
+      870,
+      763
+    ],
+    "meanRgb": 69.92687264930227,
+    "variance": 8148.754652618273
+  },
+  "panelReportsCubeFocus": "CUBE_FOCUS",
+  "defaultView": {
+    "activeView": "DEFAULT",
+    "camera": {
+      "azimuth": 0.0,
+      "elevation": 0.34,
+      "distance": 455.0,
+      "target": [
+        -620.0,
+        -1125.0,
+        121.0
+      ]
+    },
+    "lens": {
+      "target": [
+        -620.0,
+        -1125.0,
+        121.0
+      ],
+      "distance": 455.0,
+      "azimuth": 0.0,
+      "elevation": 0.34,
+      "focalLength": 24.0,
+      "horizontalAperture": 20.955,
+      "verticalAperture": 11.787187499999998,
+      "clippingRange": [
+        1.0,
+        10000000.0
+      ]
+    }
+  },
+  "customAfterOrbit": {
+    "activeView": "CUSTOM",
+    "camera": [
+      -0.63,
+      0.748,
+      455.0,
+      [
+        -620.0,
+        -1125.0,
+        121.0
+      ]
+    ]
+  },
+  "panelReportsCustom": "CUSTOM",
+  "customAfterPan": {
+    "activeView": "CUSTOM",
+    "camera": [
+      0.244979,
+      0.435807,
+      322.179982,
+      [
+        -665.915691,
+        -1125.834751,
+        143.175359
+      ]
+    ]
+  },
+  "customAfterZoom": {
+    "activeView": "CUSTOM",
+    "camera": [
+      0.244979,
+      0.435807,
+      251.081352,
+      [
+        -620.0,
+        -1125.0,
+        121.0
+      ]
+    ]
+  },
+  "finalDefault": {
+    "activeView": "DEFAULT",
+    "camera": {
+      "azimuth": 0.0,
+      "elevation": 0.34,
+      "distance": 455.0,
+      "target": [
+        -620.0,
+        -1125.0,
+        121.0
+      ]
+    },
+    "lens": {
+      "target": [
+        -620.0,
+        -1125.0,
+        121.0
+      ],
+      "distance": 455.0,
+      "azimuth": 0.0,
+      "elevation": 0.34,
+      "focalLength": 24.0,
+      "horizontalAperture": 20.955,
+      "verticalAperture": 11.787187499999998,
+      "clippingRange": [
+        1.0,
+        10000000.0
+      ]
+    }
+  },
+  "streamHealth": {
+    "ready": true,
+    "rendererOwnerCount": 1,
+    "renderProduct": "/Render/OVServer/ViewportTexture0",
+    "activeViewerCamera": "/OVCamera",
+    "frameIndex": 339,
+    "lastError": ""
+  },
+  "focusCameraPath": "/Session/Cameras/R17CubeFocus",
+  "screenshot": "/home/elliemcintosh/Documents/physical_ai_agent/RTXViewport/Attic_Portal/artifacts/r17-camera-preset-smoke.png",
+  "result": "PASS"
+}

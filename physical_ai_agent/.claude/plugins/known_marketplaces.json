@@ -1,0 +1,10 @@
+{
+  "claude-plugins-official": {
+    "source": {
+      "source": "github",
+      "repo": "anthropics/claude-plugins-official"
+    },
+    "installLocation": "/home/elliemcintosh/Documents/physical_ai_agent/RTXViewport/ovrtx/.claude/plugins/marketplaces/claude-plugins-official",
+    "lastUpdated": "2026-09-24T03:08:31.459Z"
+  }
+}

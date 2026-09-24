@@ -1,0 +1,36 @@
+{
+  "layer": "/home/elliemcintosh/Documents/physical_ai_agent/RTXViewport/Attic_Portal/usd/R17_Lidar.usda",
+  "enabled": {
+    "status": "READY",
+    "sensorPath": "/Session/Sensors/R17Lidar",
+    "renderProduct": "/Session/Render/Products/R17LidarProduct",
+    "pointCloudOutput": "PointCloud",
+    "requestedChannels": [
+      "Coordinates",
+      "Intensity",
+      "ObjectId",
+      "Flags",
+      "Counts"
+    ],
+    "nonvisualMaterialCount": 103,
+    "outputKeys": [
+      "PointCloud"
+    ],
+    "validPointCount": 431321,
+    "nearestRange": 1.4921822523070014
+  },
+  "focused": {
+    "activeView": "CUBE_FOCUS",
+    "status": "READY",
+    "validPointCount": 422309,
+    "nearestRange": 2.4540766835700287
+  },
+  "disabled": {
+    "status": "DISABLED",
+    "validPointCount": null,
+    "nearestRange": null
+  },
+  "rendererOwnerCountBefore": 1,
+  "rendererOwnerCountAfter": 1,
+  "artifact": "/home/elliemcintosh/Documents/physical_ai_agent/RTXViewport/Attic_Portal/artifacts/r17-lidar-preview.png"
+}

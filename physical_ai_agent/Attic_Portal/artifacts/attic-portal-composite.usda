@@ -1,0 +1,71 @@
+#usda 1.0
+(
+    customLayerData = {
+        bool populateAllAuthoredAttributes = true
+    }
+    subLayers = [
+        @/home/elliemcintosh/Documents/physical_ai_agent/RTXViewport/Attic_Portal/usd/R17_Camera.usda@,
+        @/home/elliemcintosh/Documents/physical_ai_agent/RTXViewport/Attic_Portal/usd/R17_Semantics.usda@,
+        @/home/elliemcintosh/Documents/physical_ai_agent/RTXViewport/Attic_Portal/usd/R17_Lidar.usda@,
+        @/home/elliemcintosh/Documents/physical_ai_agent/RTXViewport/Attic_NVIDIA/Attic_NVIDIA.usd@,
+        @/home/elliemcintosh/Documents/physical_ai_agent/RTXViewport/Attic_NVIDIA/OldAttic_Mission.usda@
+    ]
+    defaultPrim = "Session"
+)
+
+def Camera "OVCamera"
+{
+    float2 clippingRange = (1, 10000000)
+    float focalLength = 24
+    float horizontalAperture = 20.955
+    float verticalAperture = 11.7872
+    token projection = "perspective"
+    double3 xformOp:translate = (-620, -1580, 280)
+    uniform token[] xformOpOrder = ["xformOp:translate"]
+}
+
+def "Render"
+{
+    def "OVServer"
+    {
+        def RenderProduct "ViewportTexture0" (
+            prepend apiSchemas = ["OmniRtxSettingsCommonAdvancedAPI_1", "OmniRtxSettingsPtAdvancedAPI_1", "OmniRtxSettingsRtAdvancedAPI_1"]
+        )
+        {
+            string omni:rtx:rendermode = "RealTimePathTracing"
+            int omni:rtx:rtpt:maxBounces = 3
+            int omni:rtx:rtpt:maxSpecularAndTransmissionBounces = 3
+            bool omni:rtx:rtpt:fireflyFilter:enabled = true
+            rel camera = </OVCamera>
+            rel orderedVars = [
+                </Render/Vars/LdrColor>,
+                </Render/Vars/SemanticSegmentation>,
+                </Render/Vars/SemanticIdMap>
+            ]
+            uniform int2 resolution = (960, 540)
+        }
+    }
+
+    def "Vars"
+    {
+        def RenderVar "LdrColor"
+        {
+            uniform string sourceName = "LdrColor"
+        }
+
+        def RenderVar "SemanticSegmentation"
+        {
+            string sourceName = "SemanticSegmentation"
+        }
+
+        def RenderVar "SemanticIdMap"
+        {
+            string sourceName = "SemanticIdMap"
+        }
+    }
+
+    def RenderSettings "OVRenderSettings"
+    {
+        rel products = [</Render/OVServer/ViewportTexture0>]
+    }
+}
