@@ -1,0 +1,178 @@
+{
+  "url": "http://127.0.0.1:5176/?server=10.128.0.2&signalingport=49101",
+  "stateUrl": "http://127.0.0.1:8082/state.json",
+  "headless": true,
+  "video": {
+    "readyState": 4,
+    "width": 960,
+    "height": 540,
+    "paused": false
+  },
+  "panelCubePath": "/Root/Workshop/Cube",
+  "poseButtonLabels": [
+    "HOME",
+    "LEFT POSE -15",
+    "RIGHT POSE +15"
+  ],
+  "sequence": [
+    "HOME",
+    "LEFT",
+    "LEFT(repeat)",
+    "RIGHT",
+    "HOME"
+  ],
+  "initial": {
+    "pose": "HOME",
+    "offsetX": 0,
+    "cubePath": "/Root/Workshop/Cube",
+    "translate": [
+      -620.0,
+      -1125.0,
+      121.0
+    ],
+    "homeTranslate": [
+      -620.0,
+      -1125.0,
+      121.0
+    ],
+    "rotationScaleUnchanged": true,
+    "targetExactFromHome": true,
+    "status": "READY",
+    "transitionActive": false
+  },
+  "left": {
+    "pose": "LEFT",
+    "offsetX": -15,
+    "cubePath": "/Root/Workshop/Cube",
+    "translate": [
+      -635.0,
+      -1125.0,
+      121.0
+    ],
+    "homeTranslate": [
+      -620.0,
+      -1125.0,
+      121.0
+    ],
+    "rotationScaleUnchanged": true,
+    "targetExactFromHome": true,
+    "status": "READY",
+    "transitionActive": false,
+    "controlsDisabledWhileInFlight": true,
+    "controlsReenabledAfterReady": true
+  },
+  "leftRepeat": {
+    "pose": "LEFT",
+    "restartedMovement": false,
+    "transformUnchanged": true,
+    "status": "READY",
+    "offsetX": -15,
+    "acknowledgement": "LEFT pose already active; no movement required"
+  },
+  "right": {
+    "pose": "RIGHT",
+    "offsetX": 15,
+    "cubePath": "/Root/Workshop/Cube",
+    "translate": [
+      -605.0,
+      -1125.0,
+      121.0
+    ],
+    "homeTranslate": [
+      -620.0,
+      -1125.0,
+      121.0
+    ],
+    "rotationScaleUnchanged": true,
+    "targetExactFromHome": true,
+    "status": "READY",
+    "transitionActive": false,
+    "controlsDisabledWhileInFlight": true,
+    "controlsReenabledAfterReady": true
+  },
+  "home": {
+    "pose": "HOME",
+    "offsetX": 0,
+    "cubePath": "/Root/Workshop/Cube",
+    "translate": [
+      -620.0,
+      -1125.0,
+      121.0
+    ],
+    "homeTranslate": [
+      -620.0,
+      -1125.0,
+      121.0
+    ],
+    "rotationScaleUnchanged": true,
+    "targetExactFromHome": true,
+    "status": "READY",
+    "transitionActive": false,
+    "controlsDisabledWhileInFlight": true,
+    "controlsReenabledAfterReady": true
+  },
+  "homeRestoresCompleteTransform": {
+    "recordedHomeRowMajor": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        -620.0,
+        -1125.0,
+        121.0,
+        1.0
+      ]
+    ],
+    "currentRowMajor": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        -620.0,
+        -1125.0,
+        121.0,
+        1.0
+      ]
+    ],
+    "allSixteenElementsEqual": true,
+    "homeUnchangedByTheWholeSequence": true
+  },
+  "streamHealth": {
+    "ready": true,
+    "frameIndex": 5361,
+    "rendererOwnerCount": 1,
+    "lastError": ""
+  },
+  "screenshot": "/home/elliemcintosh/Documents/physical_ai_agent/RTXViewport/Attic_Portal/artifacts/cube-link-browser.png",
+  "result": "PASS"
+}

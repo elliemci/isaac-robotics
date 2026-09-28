@@ -1,0 +1,1428 @@
+#usda 1.0
+(
+    defaultPrim = "Session"
+)
+
+def Xform "Session"
+{
+    def Xform "Sensors"
+    {
+        def OmniLidar "R17Lidar" (
+            prepend apiSchemas = ["OmniSensorGenericLidarCoreAPI"]
+        )
+        {
+            token omni:sensor:Core:elementsCoordsType = "CARTESIAN"
+            bool omni:sensor:Core:includeInvalidPoints = 0
+            bool omni:sensor:Core:instantLidar = 1
+            token omni:sensor:Core:outputFrameOfReference = "SENSOR"
+            token omni:sensor:Core:outputMotionCompensationState = "NONCOMPENSATED"
+            bool omni:sensor:Core:partialOutputs = 0
+            double2 omni:sensor:frameRate = (10, 1)
+            matrix4d xformOp:transform = ( (1, -0, 0, 0), (0, 0.333487092141, 0.942754665528, 0), (-0, -0.942754665528, 0.333487092141, 0), (-620, -1553.95337282, 272.736626924, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+        }
+    }
+
+    def "Render"
+    {
+        def "Products"
+        {
+            def RenderProduct "R17LidarProduct"
+            {
+                rel camera = </Session/Sensors/R17Lidar>
+                rel orderedVars = </Session/Render/Vars/PointCloud>
+            }
+        }
+
+        def "Vars"
+        {
+            def RenderVar "PointCloud"
+            {
+                string[] channels = ["Coordinates", "Intensity", "ObjectId", "Flags", "Counts"]
+                uniform string sourceName = "PointCloud"
+            }
+        }
+    }
+}
+
+over "Root"
+{
+    over "Geometry"
+    {
+        over "Floor"
+        {
+            over "Looks"
+            {
+                over "DefaultMaterial"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "LightBlocker"
+        {
+            over "Looks"
+            {
+                over "WorldGridMaterial"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "LightBlocker_01"
+        {
+            over "Looks"
+            {
+                over "WorldGridMaterial"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "ball_457"
+        {
+            over "Looks"
+            {
+                over "ball_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "bear_2"
+        {
+            over "Looks"
+            {
+                over "bear_b_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "blanket_b_459"
+        {
+            over "Looks"
+            {
+                over "box_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "blanket_fort_461"
+        {
+            over "Looks"
+            {
+                over "blanket_fort_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "blanket_fort_mat_inst_10"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "blanket_fort_mat_inst_2"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "blanket_fort_mat_inst_3"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "blanket_fort_mat_inst_5"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "blanket_fort_mat_inst_7"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "blanket_fort_mat_inst_8"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "blocks_463"
+        {
+            over "Looks"
+            {
+                over "blocks_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "book_shelf_467"
+        {
+            over "Looks"
+            {
+                over "book_shelf"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "books_465"
+        {
+            over "Looks"
+            {
+                over "books_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "books_mat_inst_2"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "books_mat_inst_3"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "books_mat_inst_4"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "books_mat_inst_5"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "books_mat_inst_6"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "books_mat_inst_8"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "box_469"
+        {
+            over "Looks"
+            {
+                over "box_mat_inst_1"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "chair_471"
+        {
+            over "Looks"
+            {
+                over "chair_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "chest_473"
+        {
+            over "Looks"
+            {
+                over "file_cab_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "clock_475"
+        {
+            over "Looks"
+            {
+                over "LowFrost_Glass"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "block_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "colored_balls_477"
+        {
+            over "Looks"
+            {
+                over "colored_balls_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "couch_479"
+        {
+            over "Looks"
+            {
+                over "couch_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "curtain_481"
+        {
+            over "Looks"
+            {
+                over "curtain_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "dart_board_483"
+        {
+            over "Looks"
+            {
+                over "dart_board_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "file_cab_485"
+        {
+            over "Looks"
+            {
+                over "file_cab_mat_inst_2"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "fishing_net_487"
+        {
+            over "Looks"
+            {
+                over "fishing_net_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "fishing_net_rod_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "floor2_6"
+        {
+            over "Looks"
+            {
+                over "floor"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "floor3"
+        {
+            over "Looks"
+            {
+                over "floor"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "football_489"
+        {
+            over "Looks"
+            {
+                over "file_cab_mat_inst_3"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "frame2_493"
+        {
+            over "Looks"
+            {
+                over "frame2_ma_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "frame_491"
+        {
+            over "Looks"
+            {
+                over "frame_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "glass2_14"
+        {
+            over "Looks"
+            {
+                over "Glass_Jars_Chest"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "glass3_17"
+        {
+            over "Looks"
+            {
+                over "GlassJar_3"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "glass_495"
+        {
+            over "Looks"
+            {
+                over "MI_Prop_ChemistryGlass01"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "glass_mug_5"
+        {
+            over "Looks"
+            {
+                over "MI_Frosted_Glass_3"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "grama_497"
+        {
+            over "Looks"
+            {
+                over "grama_mat_int_7"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "horse_499"
+        {
+            over "Looks"
+            {
+                over "horse_mat_int"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "insolation_501"
+        {
+            over "Looks"
+            {
+                over "insalation_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "jar_lid_503"
+        {
+            over "Looks"
+            {
+                over "grama_mat_int"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "magazine_505"
+        {
+            over "Looks"
+            {
+                over "magazine_mat_inst_2"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "magazine_mat_inst_3"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "magazine_mat_inst_4"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "magazine_mat_inst_5"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "metal_ball_507"
+        {
+            over "Looks"
+            {
+                over "grama_mat_int_4"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "mirror2_509"
+        {
+            over "Looks"
+            {
+                over "DirtyMirror"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "Mirror_frame"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "painting_511"
+        {
+            over "Looks"
+            {
+                over "painting"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "painting_10"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "painting_2"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "painting_3"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "painting_4"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "painting_8"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "painting_9"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "paper_513"
+        {
+            over "Looks"
+            {
+                over "paper_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "piano_515"
+        {
+            over "Looks"
+            {
+                over "piano_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "picture_frame_517"
+        {
+            over "Looks"
+            {
+                over "picture_frame"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "pipes_519"
+        {
+            over "Looks"
+            {
+                over "pipe_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "rug_521"
+        {
+            over "Looks"
+            {
+                over "rug_a_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "shelf_523"
+        {
+            over "Looks"
+            {
+                over "shelf_mat_int"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "side_table_525"
+        {
+            over "Looks"
+            {
+                over "block_mat_inst_5"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "star_ball_529"
+        {
+            over "Looks"
+            {
+                over "Dark_rough_metal"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "string_531"
+        {
+            over "Looks"
+            {
+                over "WorldGridMaterial"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "string_lights_533"
+        {
+            over "Looks"
+            {
+                over "Shiney_dark_metal"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "Strings_lights_less"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "table_cloth_535"
+        {
+            over "Looks"
+            {
+                over "table_cloth_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "table_light_2"
+        {
+            over "Looks"
+            {
+                over "Dark_rough_metal"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "MI_Frosted_Glass_4"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "String_lights"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "telescope_537"
+        {
+            over "Looks"
+            {
+                over "tv_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "tennis_ball_539"
+        {
+            over "Looks"
+            {
+                over "tenis_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "tv_541"
+        {
+            over "Looks"
+            {
+                over "tv_mat_inst_6"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "window2"
+        {
+            over "Looks"
+            {
+                over "window_frame_base_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "window_8"
+        {
+            over "Looks"
+            {
+                over "window_frame_base_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "wood_walls2"
+        {
+            over "Looks"
+            {
+                over "upper_cross_beam"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "wall_section_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "wood_beam_e"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "wood_beams_b_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "wood_beams_c_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "wood_beams_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "wood_beams_mat_inst_0"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "wood_support_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "wood_wall_lower_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+
+        over "wood_walls_2"
+        {
+            over "Looks"
+            {
+                over "upper_cross_beam"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "wall_section_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "wood_beam_e"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "wood_beams_b_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "wood_beams_c_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "wood_beams_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "wood_beams_mat_inst_0"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "wood_support_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+
+                over "wood_wall_lower_mat_inst"
+                {
+                    custom string inputs:nonvisual:attributes = "none"
+                    custom string inputs:nonvisual:base = "none"
+                    custom string inputs:nonvisual:coating = "none"
+                    custom token[] omni:simready:nonvisual:attributes = ["none"]
+                    custom token omni:simready:nonvisual:base = "none"
+                    custom token omni:simready:nonvisual:coating = "none"
+                }
+            }
+        }
+    }
+
+    over "Looks"
+    {
+        over "BasicShapeMaterial"
+        {
+            custom string inputs:nonvisual:attributes = "none"
+            custom string inputs:nonvisual:base = "none"
+            custom string inputs:nonvisual:coating = "none"
+            custom token[] omni:simready:nonvisual:attributes = ["none"]
+            custom token omni:simready:nonvisual:base = "none"
+            custom token omni:simready:nonvisual:coating = "none"
+        }
+
+        over "LowFrost_Glass"
+        {
+            custom string inputs:nonvisual:attributes = "none"
+            custom string inputs:nonvisual:base = "none"
+            custom string inputs:nonvisual:coating = "none"
+            custom token[] omni:simready:nonvisual:attributes = ["none"]
+            custom token omni:simready:nonvisual:base = "none"
+            custom token omni:simready:nonvisual:coating = "none"
+        }
+
+        over "Mirror"
+        {
+            custom string inputs:nonvisual:attributes = "none"
+            custom string inputs:nonvisual:base = "none"
+            custom string inputs:nonvisual:coating = "none"
+            custom token[] omni:simready:nonvisual:attributes = ["none"]
+            custom token omni:simready:nonvisual:base = "none"
+            custom token omni:simready:nonvisual:coating = "none"
+        }
+    }
+
+    over "Workshop"
+    {
+        over "Looks"
+        {
+            over "MemoryCubeMaterial"
+            {
+                custom string inputs:nonvisual:attributes = "none"
+                custom string inputs:nonvisual:base = "none"
+                custom string inputs:nonvisual:coating = "none"
+                custom token[] omni:simready:nonvisual:attributes = ["none"]
+                custom token omni:simready:nonvisual:base = "none"
+                custom token omni:simready:nonvisual:coating = "none"
+            }
+        }
+    }
+}
+

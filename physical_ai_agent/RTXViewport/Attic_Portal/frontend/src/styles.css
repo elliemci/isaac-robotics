@@ -1,0 +1,199 @@
+* { box-sizing: border-box; }
+html, body, #root {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #050505;
+  font-family: Inter, system-ui, sans-serif;
+}
+.stream-shell {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #050505;
+}
+.viewport-region {
+  position: absolute;
+  inset: 0;
+  min-width: 0;
+  min-height: 0;
+}
+#remote-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #050505;
+  outline: none;
+}
+#remote-audio { display: none; }
+.r17-panel-region {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 3;
+  width: min(340px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+}
+.r17-signal-panel {
+  color: #f3f6f7;
+  background: rgba(12, 17, 18, 0.9);
+  border: 1px solid rgba(129, 215, 222, 0.35);
+  border-radius: 8px;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.45);
+  padding: 14px;
+  backdrop-filter: blur(14px);
+}
+.r17-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.r17-panel-title,
+.r17-section-label {
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.r17-panel-title {
+  font-size: 15px;
+}
+.r17-section-label,
+.r17-status-line {
+  font-size: 12px;
+  color: #aeb9bc;
+}
+.r17-cube-link,
+.r17-camera-link,
+.r17-vision-link,
+.r17-lidar-link {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid rgba(129, 215, 222, 0.2);
+  border-radius: 6px;
+  background: rgba(4, 9, 10, 0.4);
+}
+.r17-cube-path {
+  overflow-wrap: anywhere;
+  color: #d8f3ff;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.r17-pose-readout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: #e7eef0;
+  font-size: 12px;
+}
+.r17-pose-controls,
+.r17-view-controls,
+.r17-render-controls,
+.r17-lidar-controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+.r17-view-controls,
+.r17-render-controls,
+.r17-lidar-controls {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.r17-status {
+  flex: 0 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.r17-status--ready,
+.r17-command-button--success {
+  border-color: rgba(77, 214, 153, 0.55);
+  color: #74e3b4;
+}
+.r17-status--applying,
+.r17-status--waiting,
+.r17-command-button--pending {
+  border-color: rgba(239, 184, 86, 0.6);
+  color: #f0c46b;
+}
+.r17-status--error,
+.r17-command-button--error {
+  border-color: rgba(240, 112, 112, 0.6);
+  color: #ff9494;
+}
+.r17-command-button {
+  min-height: 36px;
+  overflow-wrap: anywhere;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: #f7fbfc;
+  background: rgba(50, 74, 78, 0.68);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.r17-command-button:hover:not(:disabled) {
+  border-color: rgba(129, 215, 222, 0.75);
+  background: rgba(62, 91, 96, 0.9);
+}
+.r17-command-button:disabled {
+  color: #879194;
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(50, 50, 50, 0.38);
+  cursor: not-allowed;
+}
+.r17-status-line {
+  margin-top: 12px;
+  min-height: 18px;
+  overflow-wrap: anywhere;
+}
+.stream-status {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  z-index: 2;
+  color: #f3f6f7;
+  background: rgba(12, 17, 18, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.stream-status--connected {
+  border-color: rgba(77, 214, 153, 0.55);
+}
+.stream-status--failed {
+  border-color: rgba(240, 112, 112, 0.6);
+}
+.error {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  z-index: 2;
+  color: #fff;
+  background: #7d1f1f;
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+@media (max-width: 700px) {
+  .r17-panel-region {
+    top: auto;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    width: auto;
+    max-height: 46vh;
+  }
+}

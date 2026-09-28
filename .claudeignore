@@ -1,0 +1,11 @@
+.git/
+node_modules/
+build/
+dist/
+*.usd
+*.usda
+*.usdc
+*.gltf
+*.bin
+*.log
+cached_exts/

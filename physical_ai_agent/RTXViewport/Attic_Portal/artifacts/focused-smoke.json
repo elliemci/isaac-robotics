@@ -1,0 +1,40 @@
+{
+  "health": "ok",
+  "ready": true,
+  "renderer_owner_count": 1,
+  "first_valid_converted_frame": {
+    "frame_index": 3178,
+    "width": 960,
+    "height": 540,
+    "artifact": "/home/elliemcintosh/Documents/physical_ai_agent/RTXViewport/Attic_Portal/artifacts/attic-portal-first-frame.png"
+  },
+  "mission_cube_matches": [
+    [
+      "/Root/Workshop/Cube",
+      "Memory Cube"
+    ]
+  ],
+  "runtime_mission_role_query": "ok",
+  "r17_cube_link": {
+    "cubePath": "/Root/Workshop/Cube",
+    "status": "READY",
+    "requestedPose": "HOME",
+    "offsetX": 0,
+    "transitionActive": false,
+    "homeTranslate": [
+      -620.0,
+      -1125.0,
+      121.0
+    ],
+    "currentTranslate": [
+      -620.0,
+      -1125.0,
+      121.0
+    ],
+    "rotationScaleUnchanged": true
+  },
+  "source_hashes": {
+    "/home/elliemcintosh/Documents/physical_ai_agent/RTXViewport/Attic_NVIDIA/Attic_NVIDIA.usd": "12db25c282bcf57ba371381d96c5ea11dd0709386493b27e99b2c6c70992502c",
+    "/home/elliemcintosh/Documents/physical_ai_agent/RTXViewport/Attic_NVIDIA/OldAttic_Mission.usda": "80b9adfcef7a587caddd0eb04dfa85d84baff52f4bb80712d9f19bad29657739"
+  }
+}

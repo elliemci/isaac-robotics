@@ -64,3 +64,30 @@ physical_ai_agent/Attic_Portal/vendor/ovstream/examples/c/starfield_stream/data/
 
 # Ignore all unnecessary third-party Claude marketplace plugins
 physical_ai_agent/.claude/plugins/marketplaces/
+# RTXViewport subproject: local agent state (contains credentials/history), runtime output, heavy deps
+physical_ai_agent/RTXViewport/**/.claude/
+physical_ai_agent/RTXViewport/Attic_Portal/logs/
+physical_ai_agent/RTXViewport/Attic_Portal/.tools/
+physical_ai_agent/RTXViewport/Attic_Portal/frontend/node_modules/
+physical_ai_agent/RTXViewport/Attic_Portal/vendor/ovstream/examples/c/starfield_stream/data/
+
+# Heavy / regenerable artifacts (any subproject, incl. NVIDIA Omniverse clones)
+.venv/
+venv/
+.tools/
+*.tar.xz
+*.tar.gz
+*.zip
+.nv_cache/
+.nvidia-omniverse/
+ov_cache/
+*.shadercache
+*.orig
+*.rej
+*.pt
+*.pth
+*.onnx
+*.engine
+*.ckpt
+*.mp4
+core.[0-9]*
