@@ -1,0 +1,40 @@
+{
+  "url": "http://127.0.0.1:5177/?server=10.128.0.2&signalingport=49101",
+  "sectionTitle": "Run Physics Simluation",
+  "playButton": "\u25b6 PLAY",
+  "stage": "/home/elliemcintosh/Documents/isaac-robotics/physical_ai_agent/SimReadyPhysics/OldAttic_Mission_2.usda",
+  "missionStageSha256Before": "6fdf33ca200c21f19e9595bb9b8b6a6f9d4ad1ab75b9314713d41dfe801b87fa",
+  "missionStageSha256After": "6fdf33ca200c21f19e9595bb9b8b6a6f9d4ad1ab75b9314713d41dfe801b87fa",
+  "physics": {
+    "runtimeInstalled": true,
+    "runtimeVersion": "0.6.3",
+    "status": "NOT_SIMULATION_READY",
+    "stepCount": 1,
+    "elapsedTime": 0.016666666666666666,
+    "fixedDt": 0.016666666666666666,
+    "loadMs": 261.651,
+    "stepMs": 0.946,
+    "rigidBodyCount": 0,
+    "bridgeReady": false,
+    "playCount": 1,
+    "loadedStagePath": "/home/elliemcintosh/Documents/isaac-robotics/physical_ai_agent/SimReadyPhysics/Attic_Portal/artifacts/attic-portal-composite.usda",
+    "message": "ovphysx stepped; no usable rigid bodies, scene stays still"
+  },
+  "renderer_owner_count": 1,
+  "stage_open_count": 1,
+  "frameIndexBefore": 313,
+  "frameIndexAfter": 367,
+  "pixelNoiseFloor": 0.3613,
+  "pixelChangeAfterPlay": 0.5723,
+  "secondPlay": {
+    "playCount": 2,
+    "status": "NOT_SIMULATION_READY",
+    "stepCount": 1,
+    "elapsedTime": 0.016666666666666666,
+    "rigidBodyCount": 0,
+    "loadMs": 237.506,
+    "stepMs": 0.182
+  },
+  "panelSectionText": "Run Physics Simluation\nNOT_SIMULATION_READY\nrigid bodies 0\n/home/elliemcintosh/Documents/isaac-robotics/physical_ai_agent/SimReadyPhysics/OldAttic_Mission_2.usda\nsteps 1\nt 0.0167 s\nbridge NOT READY\nplays 1",
+  "artifact": "/home/elliemcintosh/Documents/isaac-robotics/physical_ai_agent/SimReadyPhysics/Attic_Portal/artifacts/r17-physics-probe.png"
+}
