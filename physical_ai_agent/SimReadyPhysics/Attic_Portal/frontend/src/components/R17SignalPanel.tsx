@@ -3,7 +3,7 @@ import { R17CommandButton } from './R17CommandButton';
 import { useR17CommandSender } from '../hooks/useR17CommandSender';
 import { useR17StateFeed, useR17StateSubscription } from '../hooks/useR17StateSubscription';
 import { useStreaming } from '../streaming/StreamingProvider';
-import type { R17LidarStatus, R17OffsetX, R17PhysicsState, R17Pose, R17RenderMode, R17StatePayload, R17StateStatus, R17View } from '../types/r17';
+import type { R17LidarStatus, R17OffsetX, R17PhysicsState, R17Pose, R17SimReadyState, R17RenderMode, R17StatePayload, R17StateStatus, R17View } from '../types/r17';
 
 const POSE_BUTTONS: Array<{ pose: R17Pose; label: string }> = [
   { pose: 'LEFT', label: 'LEFT POSE -15' },
@@ -50,6 +50,7 @@ export function R17SignalPanel() {
   const [nearestRange, setNearestRange] = useState<number | null>(null);
   const [nonvisualMaterialCount, setNonvisualMaterialCount] = useState<number | null>(null);
   const [physics, setPhysics] = useState<R17PhysicsState | null>(null);
+  const [simready, setSimready] = useState<R17SimReadyState | null>(null);
   const [inFlightRequestId, setInFlightRequestId] = useState<string | null>(null);
   const { sendR17Command } = useR17CommandSender();
   const { status: streamStatus } = useStreaming();
@@ -82,6 +83,7 @@ export function R17SignalPanel() {
     if (state.validPointCount !== undefined) setValidPointCount(state.validPointCount);
     if (state.nearestRange !== undefined) setNearestRange(state.nearestRange);
     if (state.physics) setPhysics(state.physics);
+    if (state.simready) setSimready(state.simready);
     setTransitionActive(Boolean(state.transitionActive));
     setStatus(state.status);
     setStatusText(state.error || state.message || state.status);
@@ -112,6 +114,8 @@ export function R17SignalPanel() {
   // The physics probe only reads state and never moves the scene, so it uses
   // the same gate as the camera presets.
   const physicsControlsDisabled = viewControlsDisabled;
+  // SimReady Validate is read-only USD inspection; same gate as the physics probe.
+  const simreadyControlsDisabled = viewControlsDisabled;
 
   return (
     <aside className="r17-signal-panel" aria-label="R-17 Signal Panel">
@@ -246,6 +250,44 @@ export function R17SignalPanel() {
           onRequestState={handleCorrelatedState}
         >
           ▶ PLAY
+        </R17CommandButton>
+      </div>
+
+      <section className="r17-simready-link" aria-label="SimReady Validate">
+        <div className="r17-section-label">SimReady Validate</div>
+        <div className="r17-pose-readout">
+          <span>{simready?.status ?? 'IDLE'}</span>
+          <span>{`missing ${simready?.missingCount ?? 0}`}</span>
+        </div>
+        <div className="r17-cube-path">{simready?.stagePath || 'Resolving Mission 2 stage...'}</div>
+        {simready && simready.status === 'IDLE' ? <div className="r17-cube-path">Not run. Click run targets.</div> : null}
+        {simready?.targets.map((target) => (
+          <div className="r17-pose-readout" key={target.target}>
+            <span>{target.target}</span>
+            <span>{`${target.status} (${target.missingCount})`}</span>
+          </div>
+        ))}
+        {simready?.error ? <div className="r17-simready-error">{simready.error}</div> : null}
+        {simready && simready.missing.length > 0 ? (
+          <ul className="r17-simready-missing" aria-label="Missing requirements">
+            {simready.missing.map((item, index) => (
+              <li key={`${item.target}-${item.rule}-${item.prim}-${index}`}>
+                <strong>{item.rule}</strong> {item.prim} — {item.detail}
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </section>
+
+      <div className="r17-simready-controls" aria-label="SimReady Validate controls">
+        <R17CommandButton
+          command="simready.validateTargets"
+          payload={{ userInitiated: true }}
+          disabled={simreadyControlsDisabled}
+          onRequestStart={setInFlightRequestId}
+          onRequestState={handleCorrelatedState}
+        >
+          run targets
         </R17CommandButton>
       </div>
 

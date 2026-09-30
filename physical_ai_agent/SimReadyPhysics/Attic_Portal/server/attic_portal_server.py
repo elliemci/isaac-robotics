@@ -75,6 +75,18 @@ from r17_physics import (
     run_physics_probe,
 )
 
+from r17_simready import (
+    SIMREADY_ERROR,
+    SIMREADY_IDLE,
+    SIMREADY_NOT_READY,
+    SIMREADY_PASS,
+    SIMREADY_RUNNING,
+    default_pod_path,
+    default_stage_path,
+    initial_simready_state,
+    run_simready_validation,
+)
+
 ROOT = Path(__file__).resolve().parents[1]
 SESSION_ROOT = ROOT.parent
 ARTIFACT_DIR = ROOT / "artifacts"
@@ -100,6 +112,7 @@ R17_STATE_COMMAND = "r17.getState"
 R17_RENDER_COMMAND = "render.setMode"
 R17_LIDAR_COMMAND = "lidar.setEnabled"
 R17_PHYSICS_COMMAND = "physics.play"
+R17_SIMREADY_COMMAND = "simready.validateTargets"
 R17_VALID_OFFSETS = {-15, 0, 15}
 R17_PRESET_VIEWS = ("DEFAULT", "CUBE_FOCUS")
 R17_VIEWS = R17_PRESET_VIEWS + ("CUSTOM",)
@@ -568,6 +581,10 @@ class AtticPortalServer:
         # owner thread, loads the composed stage per Play, and never writes a
         # pose back to ovrtx.
         self.r17_physics = initial_physics_state(self.stage_path)
+        # SimReady Validate stays IDLE until the user clicks "run targets".
+        self.simready_stage_path = default_stage_path(SESSION_ROOT)
+        self.simready_pod_path = default_pod_path(SESSION_ROOT)
+        self.r17_simready = initial_simready_state(self.simready_stage_path, self.simready_pod_path)
         self.artifact_frame = ARTIFACT_DIR / "attic-portal-first-frame.png"
         self.composite_stage = ARTIFACT_DIR / "attic-portal-composite.usda"
         self.renderer_create_count = 0
@@ -597,8 +614,14 @@ class AtticPortalServer:
             "robot_vision": self.robot_vision_payload(),
             "lidar": self.lidar_payload(),
             "physics": self.physics_payload(),
+            "simready": self.simready_payload(),
             "r17": self.r17_state_payload(request_id="state.json"),
         }
+
+    def simready_payload(self) -> dict[str, Any]:
+        """Server-authoritative SimReady Validate readout (a copy)."""
+
+        return {**self.r17_simready, "missing": list(self.r17_simready["missing"]), "targets": list(self.r17_simready["targets"])}
 
     def physics_payload(self) -> dict[str, Any]:
         """Server-authoritative Physics Probe readout (a copy, safe to serialize)."""
@@ -1026,6 +1049,7 @@ class AtticPortalServer:
             "validPointCount": self.r17_lidar_valid_point_count,
             "nearestRange": self.r17_lidar_nearest_range,
             "physics": self.physics_payload(),
+            "simready": self.simready_payload(),
             "homeTransformRowMajor": matrix_to_rows(self.r17_home_transform),
             "currentTransformRowMajor": matrix_to_rows(self.r17_current_transform),
         }
@@ -1094,6 +1118,10 @@ class AtticPortalServer:
 
         if command == R17_PHYSICS_COMMAND:
             self.handle_r17_physics_command(request_id)
+            return
+
+        if command == R17_SIMREADY_COMMAND:
+            self.handle_r17_simready_command(request_id, payload)
             return
 
         if command != R17_POSE_COMMAND:
@@ -1532,6 +1560,50 @@ class AtticPortalServer:
             physics["loadMs"],
             physics["stepMs"],
         )
+        self.send_r17_state(request_id, status="READY", command=command, message=message)
+
+    def handle_r17_simready_command(self, request_id: str, payload: dict[str, Any]) -> None:
+        """Validate the Mission 2 stage and containment pod, read-only.
+
+        Runs only on an explicit userInitiated click; anything else is refused
+        and leaves the panel IDLE. Authors no USD and never calls renderer.step().
+        """
+
+        command = R17_SIMREADY_COMMAND
+        inner = payload.get("payload")
+        if not isinstance(inner, dict) or inner.get("userInitiated") is not True:
+            self.send_r17_state(
+                request_id,
+                status="ERROR",
+                command=command,
+                message="SimReady validation requires a user click",
+                error="userInitiated must be true",
+            )
+            return
+        if request_id in self.r17_seen_request_ids:
+            self.send_r17_state(request_id, command=command, message=f"Duplicate request {request_id} acknowledged; result unchanged")
+            return
+        self.r17_seen_request_ids.add(request_id)
+        self.trim_seen_request_ids()
+
+        simready = self.r17_simready
+        simready["runCount"] += 1
+        simready.update(status=SIMREADY_RUNNING, message="Validating targets", error="")
+        self.send_r17_state(request_id, status="APPLYING", command=command, message="Validating targets")
+        try:
+            result = run_simready_validation(self.simready_stage_path, self.simready_pod_path)
+        except Exception as exc:
+            simready.update(status=SIMREADY_ERROR, message="SimReady validation failed", error=str(exc), missingCount=0, missing=[], targets=[])
+            self.last_error = str(exc)
+            logging.exception("R-17 SimReady validation failed")
+            self.send_r17_state(request_id, status="ERROR", command=command, message="SimReady validation failed", error=str(exc))
+            return
+        count = int(result["missingCount"])
+        status = SIMREADY_NOT_READY if count else SIMREADY_PASS
+        message = f"{count} missing requirement(s)" if count else "All requirements met"
+        simready.update(result)
+        simready.update(status=status, message=message, error="")
+        logging.info("R-17 SimReady: request=%s status=%s missing=%d", request_id, status, count)
         self.send_r17_state(request_id, status="READY", command=command, message=message)
 
     def enable_r17_lidar(self, request_id: str, command: str) -> None:

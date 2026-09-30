@@ -46,6 +46,35 @@ export type R17PhysicsState = {
   error: string;
 };
 
+/** Server-authoritative SimReady Validate state. IDLE until the user clicks "run targets". */
+export type R17SimReadyStatus = 'IDLE' | 'RUNNING' | 'NOT_SIMREADY' | 'PASS' | 'ERROR';
+
+export type R17SimReadyMissing = {
+  target: string;
+  rule: string;
+  prim: string;
+  detail: string;
+};
+
+export type R17SimReadyTarget = {
+  target: string;
+  path: string;
+  status: 'PASS' | 'NOT_SIMREADY';
+  missingCount: number;
+};
+
+export type R17SimReadyState = {
+  status: R17SimReadyStatus;
+  stagePath: string;
+  podPath: string;
+  runCount: number;
+  missingCount: number;
+  missing: R17SimReadyMissing[];
+  targets: R17SimReadyTarget[];
+  message: string;
+  error: string;
+};
+
 export type R17CommandPayload = {
   requestId: string;
   command: string;
@@ -84,6 +113,7 @@ export type R17StatePayload = {
   validPointCount?: number | null;
   nearestRange?: number | null;
   physics?: R17PhysicsState;
+  simready?: R17SimReadyState;
   homeTransformRowMajor?: number[][];
   currentTransformRowMajor?: number[][];
   message?: string;

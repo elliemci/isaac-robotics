@@ -70,7 +70,8 @@ html, body, #root {
 .r17-camera-link,
 .r17-vision-link,
 .r17-lidar-link,
-.r17-physics-link {
+.r17-physics-link,
+.r17-simready-link {
   display: grid;
   gap: 8px;
   margin-top: 12px;
@@ -108,6 +109,18 @@ html, body, #root {
 .r17-lidar-controls {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
+.r17-simready-missing {
+  margin: 0;
+  padding-left: 16px;
+  max-height: 160px;
+  overflow-y: auto;
+  font-size: 12px;
+}
+.r17-simready-error {
+  color: #ff8a80;
+  font-size: 12px;
+}
+.r17-simready-controls,
 .r17-physics-controls {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
