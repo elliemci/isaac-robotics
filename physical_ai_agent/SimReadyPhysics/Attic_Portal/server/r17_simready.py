@@ -71,7 +71,7 @@ def validate_stage(path: Path) -> dict[str, Any]:
         missing.append(_missing(SIMREADY_TARGET_STAGE, "stage.metersPerUnit", "/", "metersPerUnit is not authored"))
     if not stage.GetDefaultPrim():
         missing.append(_missing(SIMREADY_TARGET_STAGE, "stage.defaultPrim", "/", "defaultPrim is not set"))
-    if not any(prim.IsA(UsdPhysics.Scene) for prim in stage.Traverse()):
+    if not any(prim.IsA(UsdPhysics.Scene) for prim in stage.TraverseAll()):
         missing.append(_missing(SIMREADY_TARGET_STAGE, "stage.physicsScene", "/", "no UsdPhysics.Scene prim"))
     pod = _find_pod(stage)
     if pod is None:
@@ -80,7 +80,9 @@ def validate_stage(path: Path) -> dict[str, Any]:
 
 
 def _find_pod(stage):
-    for prim in stage.Traverse():
+    # TraverseAll: Mission 2 authors the pod under `over "Root"`, which a
+    # default Traverse() skips.
+    for prim in stage.TraverseAll():
         if prim.GetAttribute("mission:role").Get() == POD_ROLE:
             return prim
     return None
@@ -101,14 +103,14 @@ def validate_pod(path: Path) -> dict[str, Any]:
     mass = mass_api.GetMassAttr().Get() if mass_api else None
     if not mass or mass <= 0.0:
         missing.append(_missing(SIMREADY_TARGET_POD, "pod.mass", root, "MassAPI with mass > 0 is not authored"))
-    meshes = [p for p in Usd.PrimRange(pod) if p.IsA(UsdGeom.Mesh) or p.IsA(UsdGeom.Gprim)]
+    meshes = [p for p in Usd.PrimRange(pod, Usd.PrimAllPrimsPredicate) if p.IsA(UsdGeom.Mesh) or p.IsA(UsdGeom.Gprim)]
     colliders = [p for p in meshes if p.HasAPI(UsdPhysics.CollisionAPI)]
     if not colliders:
         missing.append(_missing(SIMREADY_TARGET_POD, "pod.collision", root, "no geometry has CollisionAPI"))
     for prim in colliders:
         if prim.IsA(UsdGeom.Mesh) and not prim.HasAPI(UsdPhysics.MeshCollisionAPI):
             missing.append(_missing(SIMREADY_TARGET_POD, "pod.collisionApproximation", str(prim.GetPath()), "MeshCollisionAPI approximation is not authored"))
-        bound = UsdShade.MaterialBindingAPI(prim).ComputeBoundMaterial(UsdShade.Tokens.physics)[0]
+        bound = UsdShade.MaterialBindingAPI(prim).ComputeBoundMaterial("physics")[0]
         if not bound or not bound.GetPrim().HasAPI(UsdPhysics.MaterialAPI):
             missing.append(_missing(SIMREADY_TARGET_POD, "pod.physicsMaterial", str(prim.GetPath()), "no physics material bound"))
     return _report(SIMREADY_TARGET_POD, path, missing)
