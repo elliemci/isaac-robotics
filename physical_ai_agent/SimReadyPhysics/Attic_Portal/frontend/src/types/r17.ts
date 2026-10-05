@@ -12,36 +12,47 @@ export type R17RenderMode = 'BEAUTY' | 'SEMANTIC';
 export type R17LidarStatus = 'DISABLED' | 'WAITING' | 'READY' | 'ERROR';
 
 /**
- * Server-authoritative Physics Probe state. NOT_SIMULATION_READY means ovphysx
- * loaded and stepped the stage but found no usable rigid bodies, so nothing in
- * the rendered scene moves.
+ * Server-authoritative physics state (Mission 4). READY_TO_RUN means the
+ * physical stage contract is met and nothing has been started: no ovphysx
+ * instance exists until the user clicks Play.
  */
-export type R17PhysicsStatus = 'NOT_RUN' | 'RUNNING' | 'NOT_SIMULATION_READY' | 'SIMULATION_READY' | 'ERROR';
+export type R17PhysicsStatus = 'NOT_READY' | 'READY_TO_RUN' | 'STARTING' | 'RUNNING' | 'ERROR';
 
-export type R17PhysicsPose = {
-  position: number[];
-  orientation: number[];
+export type R17PhysicsContract = {
+  rootType: string;
+  upAxis: string;
+  metersPerUnit: number;
+  sceneCount: number;
+  sceneEnabled: boolean;
+  rigidBodyCount: number;
+  colliderCount: number;
+  cubeDynamic: boolean;
+  podKinematic: boolean;
+  podOpenTop: boolean;
+  podMinimumOpeningRadius: number | null;
+  groundStatic: boolean;
 };
 
 export type R17PhysicsState = {
   runtimeInstalled: boolean;
   runtimeVersion: string;
   status: R17PhysicsStatus;
-  /** The Mission stage the viewer was launched with. */
+  playing: boolean;
   stagePath: string;
-  /** The composed stage actually loaded into ovphysx. */
-  loadedStagePath: string;
   playCount: number;
   stepCount: number;
   elapsedTime: number;
   fixedDt: number;
-  loadMs: number | null;
-  stepMs: number | null;
+  sceneEnabled: boolean;
+  sceneCount: number;
   rigidBodyCount: number;
-  rigidBodyPoses: R17PhysicsPose[];
-  poseAttributes: string[];
-  /** Always false: no renderer pose bridge exists yet. */
+  colliderCount: number;
+  /** True when the RigidBodyAPI / CollisionAPI / PhysicsScene outlines are composed in the scene. */
+  visualizationVisible: boolean;
+  /** True only while the pose binding exists and poses flow to ovrtx. */
   bridgeReady: boolean;
+  contract: Partial<R17PhysicsContract>;
+  contractFailures: string[];
   message: string;
   error: string;
 };

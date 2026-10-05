@@ -1,0 +1,191 @@
+#usda 1.0
+(
+    doc = "Mission 4 physics opinions: scene, dynamic cube, kinematic open-top pod, static ground."
+    metersPerUnit = 0.01
+    upAxis = "Z"
+)
+
+def "Root"
+{
+    def PhysicsScene "PhysicsScene"
+    {
+        vector3f physics:gravityDirection = (0, 0, -1)
+        float physics:gravityMagnitude = 981
+    }
+
+    def "Workshop"
+    {
+        def "Looks"
+        {
+            def Material "Mission4PhysicsMaterial" (
+                prepend apiSchemas = ["PhysicsMaterialAPI"]
+            )
+            {
+                float physics:dynamicFriction = 0.5
+                float physics:restitution = 0.1
+                float physics:staticFriction = 0.6
+            }
+        }
+
+        over "Cube" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI", "PhysicsCollisionAPI", "MaterialBindingAPI"]
+        )
+        {
+            rel material:binding:physics = </Root/Workshop/Looks/Mission4PhysicsMaterial> (
+                bindMaterialAs = "weakerThanDescendants"
+            )
+            bool physics:collisionEnabled = 1
+            float physics:mass = 1
+            bool physics:rigidBodyEnabled = 1
+        }
+
+        over "C9_ContainmentPod" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            bool physics:kinematicEnabled = 1
+            float physics:mass = 2
+            bool physics:rigidBodyEnabled = 1
+
+            over "CollisionProxies"
+            {
+                over "FloorProxy" (
+                    prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding:physics = </Root/Workshop/Looks/Mission4PhysicsMaterial> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                    bool physics:collisionEnabled = 1
+                    double radius = 40
+                }
+
+                over "WallProxy_00" (
+                    prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding:physics = </Root/Workshop/Looks/Mission4PhysicsMaterial> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                    bool physics:collisionEnabled = 1
+                    double3 xformOp:scale = (3, 15.325901807804517, 27)
+                    double3 xformOp:translate = (37, 0, 31)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+                }
+
+                over "WallProxy_01" (
+                    prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding:physics = </Root/Workshop/Looks/Mission4PhysicsMaterial> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                    bool physics:collisionEnabled = 1
+                    float xformOp:rotateZ = 45
+                    double3 xformOp:scale = (3, 15.325901807804517, 27)
+                    double3 xformOp:translate = (26.16295090390226, 26.162950903902257, 31)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateZ", "xformOp:scale"]
+                }
+
+                over "WallProxy_02" (
+                    prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding:physics = </Root/Workshop/Looks/Mission4PhysicsMaterial> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                    bool physics:collisionEnabled = 1
+                    float xformOp:rotateZ = 90
+                    double3 xformOp:scale = (3, 15.325901807804517, 27)
+                    double3 xformOp:translate = (2.2655965784226034e-15, 37, 31)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateZ", "xformOp:scale"]
+                }
+
+                over "WallProxy_03" (
+                    prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding:physics = </Root/Workshop/Looks/Mission4PhysicsMaterial> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                    bool physics:collisionEnabled = 1
+                    float xformOp:rotateZ = 135
+                    double3 xformOp:scale = (3, 15.325901807804517, 27)
+                    double3 xformOp:translate = (-26.162950903902257, 26.16295090390226, 31)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateZ", "xformOp:scale"]
+                }
+
+                over "WallProxy_04" (
+                    prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding:physics = </Root/Workshop/Looks/Mission4PhysicsMaterial> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                    bool physics:collisionEnabled = 1
+                    float xformOp:rotateZ = 180
+                    double3 xformOp:scale = (3, 15.325901807804517, 27)
+                    double3 xformOp:translate = (-37, 4.531193156845207e-15, 31)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateZ", "xformOp:scale"]
+                }
+
+                over "WallProxy_05" (
+                    prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding:physics = </Root/Workshop/Looks/Mission4PhysicsMaterial> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                    bool physics:collisionEnabled = 1
+                    float xformOp:rotateZ = 225
+                    double3 xformOp:scale = (3, 15.325901807804517, 27)
+                    double3 xformOp:translate = (-26.162950903902264, -26.162950903902257, 31)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateZ", "xformOp:scale"]
+                }
+
+                over "WallProxy_06" (
+                    prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding:physics = </Root/Workshop/Looks/Mission4PhysicsMaterial> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                    bool physics:collisionEnabled = 1
+                    float xformOp:rotateZ = 270
+                    double3 xformOp:scale = (3, 15.325901807804517, 27)
+                    double3 xformOp:translate = (-6.79678973526781e-15, -37, 31)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateZ", "xformOp:scale"]
+                }
+
+                over "WallProxy_07" (
+                    prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding:physics = </Root/Workshop/Looks/Mission4PhysicsMaterial> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                    bool physics:collisionEnabled = 1
+                    float xformOp:rotateZ = 315
+                    double3 xformOp:scale = (3, 15.325901807804517, 27)
+                    double3 xformOp:translate = (26.162950903902253, -26.162950903902264, 31)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateZ", "xformOp:scale"]
+                }
+            }
+        }
+    }
+
+    def Cube "PhysicsGround" (
+        prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
+    )
+    {
+        rel material:binding:physics = </Root/Workshop/Looks/Mission4PhysicsMaterial> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        bool physics:collisionEnabled = 1
+        token visibility = "invisible"
+        double3 xformOp:scale = (150, 150, 5)
+        double3 xformOp:translate = (-640, -1125, 11)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+}
+

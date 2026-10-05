@@ -68,12 +68,17 @@ from r17_lidar import (
 )
 from r17_physics import (
     PHYSICS_ERROR,
-    PHYSICS_NOT_READY,
-    PHYSICS_READY,
+    PHYSICS_FIXED_DT,
+    PHYSICS_MAX_STEPS_PER_FRAME,
+    PHYSICS_READY_TO_RUN,
     PHYSICS_RUNNING,
+    PHYSICS_STARTING,
+    PhysicsSession,
     initial_physics_state,
-    run_physics_probe,
+    pose_to_matrix,
+    resolve_position_scale,
 )
+from r17_physics_stage import STAGE_NAME as MISSION4_STAGE_NAME
 
 from r17_physics_outlines import OUTLINE_LAYER_NAME, collect_outline_geometry, write_outlines_layer
 from r17_simready import (
@@ -599,6 +604,15 @@ class AtticPortalServer:
         self.r17_simready = initial_simready_state(self.simready_stage_path, self.simready_pod_path)
         # Viewer-owned physics outlines; None until a user-initiated fix succeeds.
         self.r17_outlines_layer: Path | None = None
+        # Mission 4: the physics outlines are part of the physical stage, so
+        # they are composed from startup (before Play) when the build wrote them.
+        if self.stage_path.name == MISSION4_STAGE_NAME and (ARTIFACT_DIR / OUTLINE_LAYER_NAME).is_file():
+            self.r17_outlines_layer = ARTIFACT_DIR / OUTLINE_LAYER_NAME
+            self.r17_physics["visualizationVisible"] = True
+        # Physics runs only after a user Play click; no session exists until then.
+        self.r17_physics_session: PhysicsSession | None = None
+        self.r17_physics_accumulator = 0.0
+        self.r17_physics_pose_scale: float | None = None
         self.artifact_frame = ARTIFACT_DIR / "attic-portal-first-frame.png"
         self.composite_stage = ARTIFACT_DIR / "attic-portal-composite.usda"
         self.renderer_create_count = 0
@@ -645,7 +659,7 @@ class AtticPortalServer:
     def physics_payload(self) -> dict[str, Any]:
         """Server-authoritative Physics Probe readout (a copy, safe to serialize)."""
 
-        return dict(self.r17_physics)
+        return {**self.r17_physics, "contract": dict(self.r17_physics["contract"]), "contractFailures": list(self.r17_physics["contractFailures"])}
 
     def camera_presets_payload(self) -> dict[str, Any]:
         def orbit(preset: CameraPreset | None) -> dict[str, Any] | None:
@@ -1137,7 +1151,7 @@ class AtticPortalServer:
             return
 
         if command == R17_PHYSICS_COMMAND:
-            self.handle_r17_physics_command(request_id)
+            self.handle_r17_physics_command(request_id, payload)
             return
 
         if command == R17_SIMREADY_COMMAND:
@@ -1146,6 +1160,17 @@ class AtticPortalServer:
 
         if command == R17_SIMREADY_FIX_COMMAND:
             self.handle_r17_simready_fix_command(request_id, payload)
+            return
+
+        if command == R17_POSE_COMMAND and self.r17_physics["playing"]:
+            # While physics runs it owns the Memory Cube transform.
+            self.send_r17_state(
+                request_id,
+                status="ERROR",
+                command=command,
+                message="Physics owns the Memory Cube while running",
+                error="cube pose commands are rejected while physics is playing",
+            )
             return
 
         if command != R17_POSE_COMMAND:
@@ -1526,65 +1551,130 @@ class AtticPortalServer:
         else:
             self.disable_r17_lidar(request_id, command)
 
-    def handle_r17_physics_command(self, request_id: str) -> None:
-        """Run one ovphysx stage load and fixed-dt step on the renderer-owner thread.
+    def handle_r17_physics_command(self, request_id: str, payload: dict[str, Any]) -> None:
+        """Play: start continuous fixed-step ovphysx on the renderer-owner thread.
 
-        Read-only: no USD is authored, no pose is written to ovrtx, and
-        renderer.step() is not called here; the render loop resumes afterwards.
+        Runs only on an explicit userInitiated click while the physical stage
+        contract is met. Loads the Mission 4 stage, waits for it, creates the
+        persistent pose binding once, and hands the Memory Cube to physics.
+        Stepping then happens in physics_tick() from the render loop.
         """
 
         command = R17_PHYSICS_COMMAND
-        if request_id in self.r17_seen_request_ids:
+        inner = payload.get("payload")
+        if not isinstance(inner, dict) or inner.get("userInitiated") is not True:
             self.send_r17_state(
                 request_id,
+                status="ERROR",
                 command=command,
-                message=f"Duplicate request {request_id} acknowledged; physics result unchanged",
+                message="Physics Play requires a user click",
+                error="userInitiated must be true",
             )
+            return
+        if request_id in self.r17_seen_request_ids:
+            self.send_r17_state(request_id, command=command, message=f"Duplicate request {request_id} acknowledged; physics state unchanged")
             return
         self.r17_seen_request_ids.add(request_id)
         self.trim_seen_request_ids()
 
         physics = self.r17_physics
-        physics["playCount"] += 1
-        physics.update(status=PHYSICS_RUNNING, message="Running ovphysx probe", error="")
-        self.send_r17_state(request_id, status="APPLYING", command=command, message="Running ovphysx probe")
-        try:
-            result = run_physics_probe(self.composite_stage)
-        except Exception as exc:
-            physics.update(
-                status=PHYSICS_ERROR,
-                message="Physics probe failed",
-                error=str(exc),
-                stepCount=0,
-                elapsedTime=0.0,
-                rigidBodyCount=0,
-                rigidBodyPoses=[],
-            )
-            self.last_error = str(exc)
-            logging.exception("R-17 physics probe failed")
-            self.send_r17_state(request_id, status="ERROR", command=command, message="Physics probe failed", error=str(exc))
+        if physics["playing"] or physics["status"] != PHYSICS_READY_TO_RUN:
+            reason = "physics is already running" if physics["playing"] else f"physics is {physics['status']}: {physics['message']}"
+            self.send_r17_state(request_id, status="ERROR", command=command, message="Play rejected", error=reason)
+            return
+        if self.r17_cube_path is None or self.r17_home_transform is None or self.r17_xform_binding is None:
+            self.send_r17_state(request_id, status="ERROR", command=command, message="Play rejected", error="Memory Cube link is not ready")
             return
 
-        rigid_body_count = int(result["rigidBodyCount"])
-        if rigid_body_count == 0:
-            status = PHYSICS_NOT_READY
-            message = "ovphysx stepped; no usable rigid bodies, scene stays still"
-        else:
-            status = PHYSICS_READY
-            message = f"ovphysx stepped {rigid_body_count} rigid bodies; renderer pose bridge not implemented"
-        physics.update(result)
-        physics.update(runtimeInstalled=True, status=status, message=message, error="")
-        logging.info(
-            "R-17 physics probe: request=%s status=%s steps=%d elapsed=%.6f rigidBodies=%d load_ms=%s step_ms=%s",
-            request_id,
-            status,
-            physics["stepCount"],
-            physics["elapsedTime"],
-            rigid_body_count,
-            physics["loadMs"],
-            physics["stepMs"],
+        physics.update(playCount=physics["playCount"] + 1, status=PHYSICS_STARTING, message="Starting physics", error="")
+        self.send_r17_state(request_id, status="APPLYING", command=command, message="Starting physics")
+        session = PhysicsSession(self.stage_path, self.r17_cube_path)
+        try:
+            session.start()
+        except Exception as exc:
+            self.fail_physics(str(exc), session)
+            self.send_r17_state(request_id, status="ERROR", command=command, message="Physics failed to start", error=str(exc))
+            return
+        # Physics starts from the authored cube pose; drop any pending pose move.
+        self.r17_transition_active = False
+        self.r17_current_transform = self.r17_home_transform.copy()
+        self.r17_physics_session = session
+        self.r17_physics_accumulator = 0.0
+        self.r17_physics_pose_scale = None
+        physics.update(
+            runtimeVersion=session.version,
+            playing=True,
+            bridgeReady=True,
+            stepCount=0,
+            elapsedTime=0.0,
+            status=PHYSICS_RUNNING,
+            message="Physics running: the Memory Cube is under physics control",
+            error="",
         )
-        self.send_r17_state(request_id, status="READY", command=command, message=message)
+        logging.info("R-17 physics started: request=%s stage=%s", request_id, self.stage_path)
+        self.send_r17_state(request_id, status="READY", command=command, message=physics["message"])
+
+    def fail_physics(self, error: str, session: PhysicsSession | None = None) -> None:
+        """Release the session and report ERROR; the cube stays where it last was."""
+
+        session = session or self.r17_physics_session
+        if session is not None:
+            session.close()
+        self.r17_physics_session = None
+        self.r17_physics.update(
+            playing=False, bridgeReady=False, status=PHYSICS_ERROR, message="Physics stopped", error=error
+        )
+        self.last_error = error
+        logging.error("R-17 physics stopped: %s", error)
+
+    def stop_physics_session(self) -> None:
+        """Clean release on shutdown: binding, detach, stage, runtime."""
+
+        session, self.r17_physics_session = self.r17_physics_session, None
+        if session is not None:
+            session.close()
+        self.r17_physics.update(playing=False, bridgeReady=False)
+
+    def physics_tick(self, frame_dt: float) -> None:
+        """Advance physics by whole fixed steps and hand the cube pose to ovrtx.
+
+        Renderer-owner thread, before renderer.step(): up to
+        PHYSICS_MAX_STEPS_PER_FRAME steps of exactly 1/60 s, then one write of
+        the Memory Cube (and its glow) into the existing xform bindings. The
+        pod is kinematic and stationary and is never written.
+        """
+
+        session = self.r17_physics_session
+        if session is None:
+            return
+        try:
+            self.r17_physics_accumulator += frame_dt
+            steps = min(int(self.r17_physics_accumulator / PHYSICS_FIXED_DT), PHYSICS_MAX_STEPS_PER_FRAME)
+            if steps <= 0:
+                return
+            self.r17_physics_accumulator = 0.0 if steps == PHYSICS_MAX_STEPS_PER_FRAME else self.r17_physics_accumulator - steps * PHYSICS_FIXED_DT
+            pose = None
+            for _ in range(steps):
+                pose = session.step(PHYSICS_FIXED_DT)
+            physics = self.r17_physics
+            physics["stepCount"] += steps
+            physics["elapsedTime"] = physics["stepCount"] * PHYSICS_FIXED_DT
+            assert pose is not None and self.r17_home_transform is not None
+            if self.r17_physics_pose_scale is None:
+                self.r17_physics_pose_scale = resolve_position_scale(
+                    pose[:3], self.r17_home_transform[3, :3], 0.01
+                )
+            pose = pose.copy()
+            pose[:3] *= self.r17_physics_pose_scale
+            cube = pose_to_matrix(pose)
+            self.write_bound_xform(self.r17_xform_binding, cube)
+            self.r17_current_transform = cube
+            if self.r17_glow_xform_binding is not None and self.r17_glow_home_transform is not None:
+                glow = self.r17_glow_home_transform @ np.linalg.inv(self.r17_home_transform) @ cube
+                self.write_bound_xform(self.r17_glow_xform_binding, glow)
+                self.r17_glow_current_transform = glow
+        except Exception as exc:
+            self.fail_physics(str(exc))
 
     def handle_r17_simready_command(self, request_id: str, payload: dict[str, Any]) -> None:
         """Validate the Mission 2 stage and containment pod, read-only.
@@ -2308,6 +2398,7 @@ class AtticPortalServer:
             try:
                 self.drain_commands()
                 self.advance_r17_transition()
+                self.physics_tick(dt)
                 self.write_camera()
                 # One renderer owner, one camera RenderProduct. While LiDAR is
                 # on, its RenderProduct joins the same step set.
@@ -2369,6 +2460,10 @@ class AtticPortalServer:
                 time.sleep(0.5)
         finally:
             self.stop_event.set()
+            # Let the render loop leave its last tick, then release physics cleanly
+            # (binding, detach, stage, runtime) before the stream shuts down.
+            thread.join(timeout=3.0)
+            self.stop_physics_session()
             if self.stream is not None:
                 try:
                     self.stream.stop()

@@ -100,8 +100,10 @@ export function R17SignalPanel() {
 
   useR17StateSubscription(inFlightRequestId, handleCorrelatedState);
 
+  // While physics runs it owns the Memory Cube, so the pose buttons step aside.
+  const physicsPlaying = Boolean(physics?.playing);
   const controlsDisabled =
-    !cubePath || Boolean(inFlightRequestId) || transitionActive || status === 'APPLYING' || status === 'WAITING';
+    !cubePath || Boolean(inFlightRequestId) || transitionActive || status === 'APPLYING' || status === 'WAITING' || physicsPlaying;
   // Camera presets only move the viewer camera, so they stay available while a
   // cube pose is settling. They still wait on this panel's own in-flight request.
   const viewControlsDisabled = !cubePath || Boolean(inFlightRequestId) || status === 'WAITING';
@@ -113,7 +115,16 @@ export function R17SignalPanel() {
   const lidarControlsDisabled = controlsDisabled;
   // The physics probe only reads state and never moves the scene, so it uses
   // the same gate as the camera presets.
-  const physicsControlsDisabled = viewControlsDisabled;
+  const physicsPlayReason = !physics
+    ? 'Waiting for the physical stage.'
+    : physics.status === 'READY_TO_RUN'
+      ? ''
+      : physics.status === 'RUNNING' || physics.status === 'STARTING'
+        ? 'Physics is already running.'
+        : physics.contractFailures.length > 0
+          ? `Stage contract not met: ${physics.contractFailures.join(', ')}.`
+          : physics.message;
+  const physicsControlsDisabled = viewControlsDisabled || physicsPlayReason !== '';
   // SimReady Validate is read-only USD inspection; same gate as the physics probe.
   const simreadyControlsDisabled = viewControlsDisabled;
   // run fixes needs a current report with a repairable RB.MB.001 finding. The
@@ -241,10 +252,23 @@ export function R17SignalPanel() {
       <section className="r17-physics-link" aria-label="Run Physics Simluation">
         <div className="r17-section-label">Run Physics Simluation</div>
         <div className="r17-pose-readout">
-          <span>{physics?.status ?? 'NOT_RUN'}</span>
+          <span>{physics?.status ?? 'NOT_READY'}</span>
           <span>{physics?.runtimeInstalled === false ? 'ovphysx missing' : `rigid bodies ${physics ? physics.rigidBodyCount : '--'}`}</span>
         </div>
         <div className="r17-cube-path">{physics?.stagePath || 'Resolving physical stage...'}</div>
+        <div className="r17-pose-readout">
+          <span>{`PhysicsScene ${physics?.sceneEnabled ? 'ENABLED' : 'DISABLED'}`}</span>
+          <span>{`colliders ${physics ? physics.colliderCount : '--'}`}</span>
+        </div>
+        <ul className="r17-physics-legend" aria-label="Physics outline legend">
+          <li><span className="r17-legend-swatch r17-legend-swatch--rigid" aria-hidden="true" />RigidBodyAPI (orange)</li>
+          <li><span className="r17-legend-swatch r17-legend-swatch--collision" aria-hidden="true" />CollisionAPI (green)</li>
+          <li><span className="r17-legend-swatch r17-legend-swatch--scene" aria-hidden="true" />PhysicsScene (blue)</li>
+        </ul>
+        <div className="r17-pose-readout">
+          <span>{physics?.visualizationVisible ? 'outlines VISIBLE' : 'outlines HIDDEN'}</span>
+          <span>{physics?.playing ? 'playing' : 'not playing'}</span>
+        </div>
         <div className="r17-pose-readout">
           <span>{`steps ${physics?.stepCount ?? 0}`}</span>
           <span>{`t ${(physics?.elapsedTime ?? 0).toFixed(4)} s`}</span>
@@ -253,11 +277,14 @@ export function R17SignalPanel() {
           <span>{physics?.bridgeReady ? 'bridge READY' : 'bridge NOT READY'}</span>
           <span>{`plays ${physics?.playCount ?? 0}`}</span>
         </div>
+        {physicsControlsDisabled && physicsPlayReason ? <div className="r17-cube-path">{`Play disabled: ${physicsPlayReason}`}</div> : null}
+        {physics?.error ? <div className="r17-simready-error">{physics.error}</div> : null}
       </section>
 
       <div className="r17-physics-controls" aria-label="R-17 physics controls">
         <R17CommandButton
           command="physics.play"
+          payload={{ userInitiated: true }}
           disabled={physicsControlsDisabled}
           onRequestStart={setInFlightRequestId}
           onRequestState={handleCorrelatedState}

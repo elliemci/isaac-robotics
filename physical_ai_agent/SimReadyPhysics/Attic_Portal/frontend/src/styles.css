@@ -109,6 +109,30 @@ html, body, #root {
 .r17-lidar-controls {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
+.r17-physics-legend {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12px;
+}
+.r17-legend-swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+  border-radius: 2px;
+}
+.r17-legend-swatch--rigid {
+  background: #ff8c0d;
+}
+.r17-legend-swatch--collision {
+  background: #1aff40;
+}
+.r17-legend-swatch--scene {
+  background: #408cff;
+}
 .r17-simready-missing {
   margin: 0;
   padding-left: 16px;

@@ -237,6 +237,10 @@ def classify_proxies(stage, pod, cube_size: float | None) -> dict[str, Any]:
                 best, yaw = worst, degrees
         slack = best
 
+    inner = None
+    if walls:
+        probe = np.array([center_xy[0], center_xy[1], 0.0])
+        inner = min(float(np.dot(np.array([probe[0], probe[1], face[2]]) - face, normal)) for normal, face in walls)
     ok = floor is not None and len(walls) >= 3 and slack is not None and slack >= MIN_OPENING_SLACK
     return {
         "floor": str(floor.GetPath()) if floor is not None else "",
@@ -245,6 +249,7 @@ def classify_proxies(stage, pod, cube_size: float | None) -> dict[str, Any]:
         "wallCount": len(walls),
         "openingSlack": None if slack is None else round(float(slack), 3),
         "openingBestYawDeg": yaw,
+        "minInnerRadius": None if inner is None else round(inner, 3),
         "cubeSize": cube_size,
         "ok": bool(ok),
     }

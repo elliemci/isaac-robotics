@@ -252,4 +252,7 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    # Superseded by Mission 4: Play is now continuous simulation and the one-shot
+    # probe this asserted no longer exists. The helpers above stay in use by the
+    # newer smokes. See validation/browser_mission4_ready.py.
+    raise SystemExit("browser_physics_smoke.py is superseded by browser_mission4_ready.py")

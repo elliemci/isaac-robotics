@@ -1,0 +1,14 @@
+#usda 1.0
+(
+    customLayerData = {
+        string mission = "Operation Attic Containment"
+        string note = "Mission 4 physical stage: physics layer over the sanitized Mission 3 scene. Generated; do not edit."
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 0.01
+    subLayers = [
+        @./Mission4_PhysicsLayer.usda@,
+        @./Mission4_AuthoredScene.usda@
+    ]
+    upAxis = "Z"
+)
