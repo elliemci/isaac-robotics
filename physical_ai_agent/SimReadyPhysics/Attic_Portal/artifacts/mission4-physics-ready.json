@@ -1,0 +1,43 @@
+{
+ "dropTestExecuted": false,
+ "playClicked": false,
+ "physicsPlayCommandSent": false,
+ "physics": {
+  "status": "READY_TO_RUN",
+  "playing": false,
+  "stepCount": 0,
+  "elapsedTime": 0.0,
+  "sceneEnabled": true,
+  "sceneCount": 1,
+  "rigidBodyCount": 2,
+  "colliderCount": 11,
+  "visualizationVisible": true,
+  "bridgeReady": false,
+  "playCount": 0
+ },
+ "contract": {
+  "rootType": "Xform",
+  "upAxis": "Z",
+  "metersPerUnit": 0.01,
+  "sceneCount": 1,
+  "sceneEnabled": true,
+  "rigidBodyCount": 2,
+  "colliderCount": 11,
+  "cubeDynamic": true,
+  "podKinematic": true,
+  "podOpenTop": true,
+  "podMinimumOpeningRadius": 34.0,
+  "groundStatic": true
+ },
+ "playEnabled": true,
+ "activeStage": "/home/elliemcintosh/Documents/isaac-robotics/physical_ai_agent/SimReadyPhysics/OldAttic_Mission_4_Physics.usda",
+ "renderer_owner_count": 1,
+ "sourceSha256": {
+  "OldAttic_Mission_3_Fixed.usda": "a9f2101800f6883c5ad1fd6130105e38487d1cfb98d664f37e208bd9682ecf6b",
+  "OldAttic_Mission_2.usda": "1b181728eca0346bc0adb288664fee7ef4eb455269e94b9c341fafb4d78279d6",
+  "C9_ContainmentPod.usda": "5c5a11052bf8eafd98fb4a025ab366395a4fe6759b0e85f769bffa6f2f42a5e3",
+  "C9_ContainmentPod_Mission_3_Fixed.usda": "ce290c36440051d6ee3282656ba91c9183861ad809572c22a5404ced1c7592b4"
+ },
+ "screenshot": "/home/elliemcintosh/Documents/isaac-robotics/physical_ai_agent/SimReadyPhysics/Attic_Portal/artifacts/r17-mission4-physics-ready.png",
+ "failures": []
+}
