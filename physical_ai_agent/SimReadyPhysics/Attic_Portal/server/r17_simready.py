@@ -22,6 +22,10 @@ SIMREADY_TARGET_POD = "containment_pod"
 POD_ROLE = "Memory Cube Containment Pod"
 MAX_REPORTED_MISSING = 40
 
+SIMREADY_FIXES_IDLE = "IDLE"
+SIMREADY_FIXES_NOT_IMPLEMENTED = "NOT_IMPLEMENTED"
+FIXES_NOT_IMPLEMENTED_MESSAGE = "Fixes are not implemented"
+
 
 def default_stage_path(session_root: Path) -> Path:
     return Path(os.environ.get("ATTIC_PORTAL_SIMREADY_STAGE") or session_root / "OldAttic_Mission_2.usda")
@@ -29,6 +33,18 @@ def default_stage_path(session_root: Path) -> Path:
 
 def default_pod_path(session_root: Path) -> Path:
     return Path(os.environ.get("ATTIC_PORTAL_SIMREADY_POD") or session_root / "C9_ContainmentPod.usda")
+
+
+def initial_fixes_state() -> dict[str, Any]:
+    """Mission 3 Part 1: "run fixes" is inert. Nothing is ever applied or outlined."""
+
+    return {
+        "status": SIMREADY_FIXES_IDLE,
+        "runCount": 0,
+        "appliedCount": 0,
+        "outlineVisible": False,
+        "message": "Fixes not run.",
+    }
 
 
 def initial_simready_state(stage_path: Path | str, pod_path: Path | str = "") -> dict[str, Any]:
@@ -40,6 +56,7 @@ def initial_simready_state(stage_path: Path | str, pod_path: Path | str = "") ->
         "missingCount": 0,
         "missing": [],
         "targets": [],
+        "fixes": initial_fixes_state(),
         "message": "Not run. Click run targets.",
         "error": "",
     }

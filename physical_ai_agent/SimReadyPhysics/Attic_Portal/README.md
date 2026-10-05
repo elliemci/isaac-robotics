@@ -60,3 +60,20 @@ Validate against a freshly started server:
 ```bash
 python validation/browser_physics_smoke.py   # writes artifacts/r17-physics-probe.png
 ```
+
+## SimReady Validate: run targets / run fixes (Mission 3, Part 1)
+
+The **SimReady Validate** section has two adjacent buttons. **run targets**
+(`simready.validateTargets`) runs the read-only validation. **run fixes**
+(`simready.applyFixes`) is inert in Part 1: it only sets
+`simready.fixes = {status: "NOT_IMPLEMENTED", appliedCount: 0, outlineVisible: false}`
+and replies "Fixes are not implemented". It runs no validation, authors no USD
+or schema, writes no output, and does not touch physics or the renderer; the
+earlier validation result is left unchanged. Both commands require
+`userInitiated: true`. Part 2 replaces the body of
+`handle_r17_simready_fixes_command` in `server/attic_portal_server.py`.
+
+```bash
+source env.sh && ./scripts/restart.sh        # fresh server
+python validation/browser_simready_run_fixes.py   # writes artifacts/r17-mission3-part1-inert-fixes.png
+```

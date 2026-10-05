@@ -267,6 +267,11 @@ export function R17SignalPanel() {
             <span>{`${target.status} (${target.missingCount})`}</span>
           </div>
         ))}
+        <div className="r17-pose-readout">
+          <span>{`fixes ${simready?.fixes?.status ?? 'IDLE'}`}</span>
+          <span>{`applied ${simready?.fixes?.appliedCount ?? 0}`}</span>
+        </div>
+        {simready?.fixes?.status === 'NOT_IMPLEMENTED' ? <div className="r17-cube-path">{simready.fixes.message}</div> : null}
         {simready?.error ? <div className="r17-simready-error">{simready.error}</div> : null}
         {simready && simready.missing.length > 0 ? (
           <ul className="r17-simready-missing" aria-label="Missing requirements">
@@ -288,6 +293,15 @@ export function R17SignalPanel() {
           onRequestState={handleCorrelatedState}
         >
           run targets
+        </R17CommandButton>
+        <R17CommandButton
+          command="simready.applyFixes"
+          payload={{ userInitiated: true }}
+          disabled={simreadyControlsDisabled}
+          onRequestStart={setInFlightRequestId}
+          onRequestState={handleCorrelatedState}
+        >
+          run fixes
         </R17CommandButton>
       </div>
 

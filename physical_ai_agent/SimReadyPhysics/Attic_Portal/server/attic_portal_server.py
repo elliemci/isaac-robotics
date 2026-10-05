@@ -76,7 +76,9 @@ from r17_physics import (
 )
 
 from r17_simready import (
+    FIXES_NOT_IMPLEMENTED_MESSAGE,
     SIMREADY_ERROR,
+    SIMREADY_FIXES_NOT_IMPLEMENTED,
     SIMREADY_IDLE,
     SIMREADY_NOT_READY,
     SIMREADY_PASS,
@@ -113,6 +115,7 @@ R17_RENDER_COMMAND = "render.setMode"
 R17_LIDAR_COMMAND = "lidar.setEnabled"
 R17_PHYSICS_COMMAND = "physics.play"
 R17_SIMREADY_COMMAND = "simready.validateTargets"
+R17_SIMREADY_FIXES_COMMAND = "simready.applyFixes"
 R17_VALID_OFFSETS = {-15, 0, 15}
 R17_PRESET_VIEWS = ("DEFAULT", "CUBE_FOCUS")
 R17_VIEWS = R17_PRESET_VIEWS + ("CUSTOM",)
@@ -621,7 +624,7 @@ class AtticPortalServer:
     def simready_payload(self) -> dict[str, Any]:
         """Server-authoritative SimReady Validate readout (a copy)."""
 
-        return {**self.r17_simready, "missing": list(self.r17_simready["missing"]), "targets": list(self.r17_simready["targets"])}
+        return {**self.r17_simready, "missing": list(self.r17_simready["missing"]), "targets": list(self.r17_simready["targets"]), "fixes": dict(self.r17_simready["fixes"])}
 
     def physics_payload(self) -> dict[str, Any]:
         """Server-authoritative Physics Probe readout (a copy, safe to serialize)."""
@@ -1124,6 +1127,10 @@ class AtticPortalServer:
             self.handle_r17_simready_command(request_id, payload)
             return
 
+        if command == R17_SIMREADY_FIXES_COMMAND:
+            self.handle_r17_simready_fixes_command(request_id, payload)
+            return
+
         if command != R17_POSE_COMMAND:
             self.send_r17_state(
                 request_id,
@@ -1605,6 +1612,44 @@ class AtticPortalServer:
         simready.update(status=status, message=message, error="")
         logging.info("R-17 SimReady: request=%s status=%s missing=%d", request_id, status, count)
         self.send_r17_state(request_id, status="READY", command=command, message=message)
+
+    def handle_r17_simready_fixes_command(self, request_id: str, payload: dict[str, Any]) -> None:
+        """Mission 3 Part 1: "run fixes" is inert.
+
+        Only reports that fixes are not implemented. It opens no layer, authors
+        no USD or schema, writes no file, runs no validation or physics, and
+        never touches the renderer; it mutates in-memory `fixes` and replies once.
+        The validation result (status, missing, targets) is left as it was.
+        """
+
+        command = R17_SIMREADY_FIXES_COMMAND
+        inner = payload.get("payload")
+        if not isinstance(inner, dict) or inner.get("userInitiated") is not True:
+            self.send_r17_state(
+                request_id,
+                status="ERROR",
+                command=command,
+                message="SimReady fixes require a user click",
+                error="userInitiated must be true",
+            )
+            return
+        if request_id in self.r17_seen_request_ids:
+            self.send_r17_state(request_id, command=command, message=f"Duplicate request {request_id} acknowledged; result unchanged")
+            return
+        self.r17_seen_request_ids.add(request_id)
+        self.trim_seen_request_ids()
+
+        fixes = self.r17_simready["fixes"]
+        fixes["runCount"] += 1
+        fixes.update(status=SIMREADY_FIXES_NOT_IMPLEMENTED, appliedCount=0, outlineVisible=False, message=FIXES_NOT_IMPLEMENTED_MESSAGE)
+        logging.info("R-17 SimReady fixes: request=%s status=%s (inert)", request_id, SIMREADY_FIXES_NOT_IMPLEMENTED)
+        self.send_r17_state(
+            request_id,
+            status="ERROR",
+            command=command,
+            message=FIXES_NOT_IMPLEMENTED_MESSAGE,
+            error=FIXES_NOT_IMPLEMENTED_MESSAGE,
+        )
 
     def enable_r17_lidar(self, request_id: str, command: str) -> None:
         # The already-enabled sensor acknowledges the current result without

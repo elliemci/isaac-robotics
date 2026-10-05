@@ -120,7 +120,12 @@ html, body, #root {
   color: #ff8a80;
   font-size: 12px;
 }
-.r17-simready-controls,
+.r17-simready-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
 .r17-physics-controls {
   display: grid;
   grid-template-columns: minmax(0, 1fr);

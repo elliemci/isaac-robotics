@@ -63,6 +63,16 @@ export type R17SimReadyTarget = {
   missingCount: number;
 };
 
+export type R17SimReadyFixes = {
+  status: 'IDLE' | 'NOT_IMPLEMENTED';
+  runCount: number;
+  /** Always 0 in Part 1: nothing is applied. */
+  appliedCount: number;
+  /** Always false in Part 1: no outline is drawn. */
+  outlineVisible: boolean;
+  message: string;
+};
+
 export type R17SimReadyState = {
   status: R17SimReadyStatus;
   stagePath: string;
@@ -71,6 +81,7 @@ export type R17SimReadyState = {
   missingCount: number;
   missing: R17SimReadyMissing[];
   targets: R17SimReadyTarget[];
+  fixes: R17SimReadyFixes;
   message: string;
   error: string;
 };
