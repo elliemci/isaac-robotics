@@ -1,0 +1,323 @@
+#usda 1.0
+(
+    customLayerData = {
+        string mission = "Operation Attic Containment"
+        string note = "Non-destructive workshop layer. Adds the C-9 Containment Pod beside the Memory Cube on the foreground antique chest."
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 0.009999999776482582
+    subLayers = [
+        @/Users/agoldstein/Downloads/Attic_NVIDIA_725/Attic_NVIDIA/Attic_NVIDIA.usd@
+    ]
+    upAxis = "Z"
+)
+
+def "Root"
+{
+    def Xform "Workshop"
+    {
+        def Scope "Looks"
+        {
+            def Material "MemoryCubeMaterial"
+            {
+                token outputs:surface.connect = </Root/Workshop/Looks/MemoryCubeMaterial/PreviewSurface.outputs:surface>
+
+                def Shader "PreviewSurface"
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    color3f inputs:diffuseColor = (0.005, 0.08, 0.12)
+                    color3f inputs:emissiveColor = (0.02, 0.8, 1)
+                    float inputs:metallic = 0.35
+                    float inputs:roughness = 0.18
+                    token outputs:surface
+                }
+            }
+
+            def Material "ContainmentGlassMaterial"
+            {
+                token outputs:surface.connect = </Root/Workshop/Looks/ContainmentGlassMaterial/PreviewSurface.outputs:surface>
+
+                def Shader "PreviewSurface"
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    color3f inputs:diffuseColor = (0.02, 0.22, 0.28)
+                    color3f inputs:emissiveColor = (0, 0.08, 0.1)
+                    float inputs:ior = 1.45
+                    float inputs:metallic = 0.05
+                    float inputs:opacity = 0.28
+                    float inputs:roughness = 0.12
+                    token outputs:surface
+                }
+            }
+
+            def Material "ContainmentBaseMaterial"
+            {
+                token outputs:surface.connect = </Root/Workshop/Looks/ContainmentBaseMaterial/PreviewSurface.outputs:surface>
+
+                def Shader "PreviewSurface"
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    color3f inputs:diffuseColor = (0.025, 0.055, 0.065)
+                    color3f inputs:emissiveColor = (0, 0.025, 0.035)
+                    float inputs:metallic = 0.75
+                    float inputs:roughness = 0.24
+                    token outputs:surface
+                }
+            }
+
+            def Material "ContainmentRingMaterial"
+            {
+                token outputs:surface.connect = </Root/Workshop/Looks/ContainmentRingMaterial/PreviewSurface.outputs:surface>
+
+                def Shader "PreviewSurface"
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    color3f inputs:diffuseColor = (0, 0.25, 0.32)
+                    color3f inputs:emissiveColor = (0, 0.85, 1)
+                    float inputs:metallic = 0.2
+                    float inputs:roughness = 0.16
+                    token outputs:surface
+                }
+            }
+        }
+
+        def Cube "Cube" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+            displayName = "Memory Cube"
+        )
+        {
+            rel material:binding = </Root/Workshop/Looks/MemoryCubeMaterial>
+            custom string mission:role = "Memory Cube"
+            color3f[] primvars:displayColor = [(0.02, 0.8, 1)]
+            uniform token primvars:displayColor:interpolation = "constant"
+            double size = 40
+            double3 xformOp:translate = (-620, -1125, 121)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+
+        def SphereLight "MemoryCubeGlow"
+        {
+            color3f inputs:color = (0.02, 0.65, 1)
+            float inputs:exposure = 7
+            float inputs:intensity = 100
+            bool inputs:normalize = 1
+            float inputs:radius = 28
+            double3 xformOp:translate = (-620, -1125, 121)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+
+        def Xform "C9_ContainmentPod" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+            displayName = "C-9 Containment Pod"
+        )
+        {
+            custom string mission:collisionRepresentation = "Separate compound proxy candidates; physics APIs intentionally unauthored"
+            custom string mission:role = "Memory Cube Containment Pod"
+            custom string mission:status = "SIMREADY VALIDATION REQUIRED"
+            custom string mission:visualRepresentation = "Open-top translucent octagonal shell"
+            float physics:mass = 2
+            bool physics:rigidBodyEnabled = 1
+            double3 xformOp:translate = (-640, -1125, 16)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+
+            def Xform "Visual"
+            {
+                def Cylinder "Base" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    token axis = "Z"
+                    double height = 4
+                    rel material:binding = </Root/Workshop/Looks/ContainmentBaseMaterial>
+                    color3f[] primvars:displayColor = [(0.025, 0.055, 0.065)]
+                    uniform token primvars:displayColor:interpolation = "constant"
+                    double radius = 34
+                    double3 xformOp:translate = (0, 0, 2)
+                    uniform token[] xformOpOrder = ["xformOp:translate"]
+                }
+
+                def Mesh "TransparentShell" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
+                    int[] faceVertexIndices = [0, 1, 9, 8, 1, 2, 10, 9, 2, 3, 11, 10, 3, 4, 12, 11, 4, 5, 13, 12, 5, 6, 14, 13, 6, 7, 15, 14, 7, 0, 8, 15, 17, 16, 24, 25, 18, 17, 25, 26, 19, 18, 26, 27, 20, 19, 27, 28, 21, 20, 28, 29, 22, 21, 29, 30, 23, 22, 30, 31, 16, 23, 31, 24, 8, 9, 25, 24, 9, 10, 26, 25, 10, 11, 27, 26, 11, 12, 28, 27, 12, 13, 29, 28, 13, 14, 30, 29, 14, 15, 31, 30, 15, 8, 24, 31]
+                    rel material:binding = </Root/Workshop/Looks/ContainmentGlassMaterial>
+                    point3f[] points = [(34, 0, 4), (24.0416, 24.0416, 4), (0, 34, 4), (-24.0416, 24.0416, 4), (-34, 0, 4), (-24.0416, -24.0416, 4), (0, -34, 4), (24.0416, -24.0416, 4), (34, 0, 58), (24.0416, 24.0416, 58), (0, 34, 58), (-24.0416, 24.0416, 58), (-34, 0, 58), (-24.0416, -24.0416, 58), (0, -34, 58), (24.0416, -24.0416, 58), (28, 0, 4), (19.799, 19.799, 4), (0, 28, 4), (-19.799, 19.799, 4), (-28, 0, 4), (-19.799, -19.799, 4), (0, -28, 4), (19.799, -19.799, 4), (28, 0, 58), (19.799, 19.799, 58), (0, 28, 58), (-19.799, 19.799, 58), (-28, 0, 58), (-19.799, -19.799, 58), (0, -28, 58), (19.799, -19.799, 58)]
+                    uniform token subdivisionScheme = "none"
+                }
+
+                def Cylinder "StatusRing" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    token axis = "Z"
+                    double height = 1.5
+                    rel material:binding = </Root/Workshop/Looks/ContainmentRingMaterial>
+                    double radius = 33
+                    double3 xformOp:translate = (0, 0, 4.75)
+                    uniform token[] xformOpOrder = ["xformOp:translate"]
+                }
+            }
+
+            def Scope "CollisionProxies"
+            {
+                custom string mission:note = "Proxy candidates are hidden and intentionally lack collision/rigid-body APIs for the Session 2 SimReady exercise."
+
+                def Cylinder "FloorProxy" (
+                    prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
+                )
+                {
+                    token axis = "Z"
+                    double height = 4
+                    rel material:binding:physics = </Root/Workshop/C9_ContainmentPod/Looks/ContainmentPhysicsMaterial> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                    bool physics:collisionEnabled = 1
+                    double radius = 28
+                    token visibility = "invisible"
+                    double3 xformOp:translate = (0, 0, 2)
+                    uniform token[] xformOpOrder = ["xformOp:translate"]
+                }
+
+                def Cube "WallProxy_00" (
+                    prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding:physics = </Root/Workshop/C9_ContainmentPod/Looks/ContainmentPhysicsMaterial> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                    bool physics:collisionEnabled = 1
+                    token visibility = "invisible"
+                    double3 xformOp:scale = (3, 11.6, 27)
+                    double3 xformOp:translate = (31, 0, 31)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+                }
+
+                def Cube "WallProxy_01" (
+                    prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding:physics = </Root/Workshop/C9_ContainmentPod/Looks/ContainmentPhysicsMaterial> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                    bool physics:collisionEnabled = 1
+                    token visibility = "invisible"
+                    float xformOp:rotateZ = 45
+                    double3 xformOp:scale = (3, 11.6, 27)
+                    double3 xformOp:translate = (21.9203, 21.9203, 31)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateZ", "xformOp:scale"]
+                }
+
+                def Cube "WallProxy_02" (
+                    prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding:physics = </Root/Workshop/C9_ContainmentPod/Looks/ContainmentPhysicsMaterial> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                    bool physics:collisionEnabled = 1
+                    token visibility = "invisible"
+                    float xformOp:rotateZ = 90
+                    double3 xformOp:scale = (3, 11.6, 27)
+                    double3 xformOp:translate = (0, 31, 31)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateZ", "xformOp:scale"]
+                }
+
+                def Cube "WallProxy_03" (
+                    prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding:physics = </Root/Workshop/C9_ContainmentPod/Looks/ContainmentPhysicsMaterial> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                    bool physics:collisionEnabled = 1
+                    token visibility = "invisible"
+                    float xformOp:rotateZ = 135
+                    double3 xformOp:scale = (3, 11.6, 27)
+                    double3 xformOp:translate = (-21.9203, 21.9203, 31)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateZ", "xformOp:scale"]
+                }
+
+                def Cube "WallProxy_04" (
+                    prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding:physics = </Root/Workshop/C9_ContainmentPod/Looks/ContainmentPhysicsMaterial> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                    bool physics:collisionEnabled = 1
+                    token visibility = "invisible"
+                    float xformOp:rotateZ = 180
+                    double3 xformOp:scale = (3, 11.6, 27)
+                    double3 xformOp:translate = (-31, 0, 31)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateZ", "xformOp:scale"]
+                }
+
+                def Cube "WallProxy_05" (
+                    prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding:physics = </Root/Workshop/C9_ContainmentPod/Looks/ContainmentPhysicsMaterial> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                    bool physics:collisionEnabled = 1
+                    token visibility = "invisible"
+                    float xformOp:rotateZ = 225
+                    double3 xformOp:scale = (3, 11.6, 27)
+                    double3 xformOp:translate = (-21.9203, -21.9203, 31)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateZ", "xformOp:scale"]
+                }
+
+                def Cube "WallProxy_06" (
+                    prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding:physics = </Root/Workshop/C9_ContainmentPod/Looks/ContainmentPhysicsMaterial> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                    bool physics:collisionEnabled = 1
+                    token visibility = "invisible"
+                    float xformOp:rotateZ = 270
+                    double3 xformOp:scale = (3, 11.6, 27)
+                    double3 xformOp:translate = (0, -31, 31)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateZ", "xformOp:scale"]
+                }
+
+                def Cube "WallProxy_07" (
+                    prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding:physics = </Root/Workshop/C9_ContainmentPod/Looks/ContainmentPhysicsMaterial> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+                    bool physics:collisionEnabled = 1
+                    token visibility = "invisible"
+                    float xformOp:rotateZ = 315
+                    double3 xformOp:scale = (3, 11.6, 27)
+                    double3 xformOp:translate = (21.9203, -21.9203, 31)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateZ", "xformOp:scale"]
+                }
+            }
+
+            def Scope "Looks"
+            {
+                def Material "ContainmentPhysicsMaterial" (
+                    prepend apiSchemas = ["PhysicsMaterialAPI"]
+                )
+                {
+                    float physics:dynamicFriction = 0.5
+                    float physics:restitution = 0.1
+                    float physics:staticFriction = 0.6
+                }
+            }
+        }
+    }
+}
+
+def PhysicsScene "PhysicsScene"
+{
+    vector3f physics:gravityDirection = (0, 0, -1)
+    float physics:gravityMagnitude = 981
+}
+
