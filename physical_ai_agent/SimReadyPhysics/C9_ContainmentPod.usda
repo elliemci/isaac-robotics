@@ -1,7 +1,7 @@
 #usda 1.0
 (
     customLayerData = {
-        string assetStatus = "SIMREADY PHYSICS AUTHORED"
+        string assetStatus = "SIMREADY VALIDATION REQUIRED"
         string mission = "Operation Attic Containment"
         string note = "Standalone C-9 candidate asset. Visual and proxy representations are authored; physics APIs are intentionally absent for the Session 2 SimReady exercise."
     }
@@ -13,26 +13,15 @@
 def Xform "C9_ContainmentPod" (
     displayName = "C-9 Containment Pod"
     kind = "component"
-    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
 )
 {
-    bool physics:rigidBodyEnabled = 1
-    float physics:mass = 2
     custom string mission:role = "Memory Cube Containment Pod"
-    custom string mission:status = "SIMREADY PHYSICS AUTHORED"
+    custom string mission:status = "SIMREADY VALIDATION REQUIRED"
     custom string mission:visualRepresentation = "Open-top translucent octagonal shell"
-    custom string mission:collisionRepresentation = "Separate compound proxy candidates; physics APIs authored on the collision proxies"
+    custom string mission:collisionRepresentation = "Separate compound proxy candidates; physics APIs intentionally unauthored"
 
     def Scope "Looks"
     {
-        def Material "ContainmentPhysicsMaterial" (
-            prepend apiSchemas = ["PhysicsMaterialAPI"]
-        )
-        {
-            float physics:dynamicFriction = 0.5
-            float physics:restitution = 0.1
-            float physics:staticFriction = 0.6
-        }
 
         def Material "ContainmentGlassMaterial"
         {
@@ -140,14 +129,10 @@ def Xform "C9_ContainmentPod" (
 
     def Scope "CollisionProxies"
     {
-        custom string mission:note = "Hidden proxies carry CollisionAPI and a bound physics material; the pod root owns the rigid body."
+        custom string mission:note = "Hidden proxy candidates intentionally lack collision and rigid-body APIs."
 
-        def Cylinder "FloorProxy" (
-            prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
-        )
+        def Cylinder "FloorProxy"
         {
-            bool physics:collisionEnabled = 1
-            rel material:binding:physics = </C9_ContainmentPod/Looks/ContainmentPhysicsMaterial>
             token axis = "Z"
             double radius = 28
             double height = 4
@@ -156,24 +141,16 @@ def Xform "C9_ContainmentPod" (
             uniform token[] xformOpOrder = ["xformOp:translate"]
         }
 
-        def Cube "WallProxy_00" (
-            prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
-        )
+        def Cube "WallProxy_00"
         {
-            bool physics:collisionEnabled = 1
-            rel material:binding:physics = </C9_ContainmentPod/Looks/ContainmentPhysicsMaterial>
             double3 xformOp:scale = (3, 11.6, 27)
             double3 xformOp:translate = (31, 0, 31)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
             token visibility = "invisible"
         }
 
-        def Cube "WallProxy_01" (
-            prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
-        )
+        def Cube "WallProxy_01"
         {
-            bool physics:collisionEnabled = 1
-            rel material:binding:physics = </C9_ContainmentPod/Looks/ContainmentPhysicsMaterial>
             float xformOp:rotateZ = 45
             double3 xformOp:scale = (3, 11.6, 27)
             double3 xformOp:translate = (21.9203, 21.9203, 31)
@@ -181,12 +158,8 @@ def Xform "C9_ContainmentPod" (
             token visibility = "invisible"
         }
 
-        def Cube "WallProxy_02" (
-            prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
-        )
+        def Cube "WallProxy_02"
         {
-            bool physics:collisionEnabled = 1
-            rel material:binding:physics = </C9_ContainmentPod/Looks/ContainmentPhysicsMaterial>
             float xformOp:rotateZ = 90
             double3 xformOp:scale = (3, 11.6, 27)
             double3 xformOp:translate = (0, 31, 31)
@@ -194,12 +167,8 @@ def Xform "C9_ContainmentPod" (
             token visibility = "invisible"
         }
 
-        def Cube "WallProxy_03" (
-            prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
-        )
+        def Cube "WallProxy_03"
         {
-            bool physics:collisionEnabled = 1
-            rel material:binding:physics = </C9_ContainmentPod/Looks/ContainmentPhysicsMaterial>
             float xformOp:rotateZ = 135
             double3 xformOp:scale = (3, 11.6, 27)
             double3 xformOp:translate = (-21.9203, 21.9203, 31)
@@ -207,12 +176,8 @@ def Xform "C9_ContainmentPod" (
             token visibility = "invisible"
         }
 
-        def Cube "WallProxy_04" (
-            prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
-        )
+        def Cube "WallProxy_04"
         {
-            bool physics:collisionEnabled = 1
-            rel material:binding:physics = </C9_ContainmentPod/Looks/ContainmentPhysicsMaterial>
             float xformOp:rotateZ = 180
             double3 xformOp:scale = (3, 11.6, 27)
             double3 xformOp:translate = (-31, 0, 31)
@@ -220,12 +185,8 @@ def Xform "C9_ContainmentPod" (
             token visibility = "invisible"
         }
 
-        def Cube "WallProxy_05" (
-            prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
-        )
+        def Cube "WallProxy_05"
         {
-            bool physics:collisionEnabled = 1
-            rel material:binding:physics = </C9_ContainmentPod/Looks/ContainmentPhysicsMaterial>
             float xformOp:rotateZ = 225
             double3 xformOp:scale = (3, 11.6, 27)
             double3 xformOp:translate = (-21.9203, -21.9203, 31)
@@ -233,12 +194,8 @@ def Xform "C9_ContainmentPod" (
             token visibility = "invisible"
         }
 
-        def Cube "WallProxy_06" (
-            prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
-        )
+        def Cube "WallProxy_06"
         {
-            bool physics:collisionEnabled = 1
-            rel material:binding:physics = </C9_ContainmentPod/Looks/ContainmentPhysicsMaterial>
             float xformOp:rotateZ = 270
             double3 xformOp:scale = (3, 11.6, 27)
             double3 xformOp:translate = (0, -31, 31)
@@ -246,12 +203,8 @@ def Xform "C9_ContainmentPod" (
             token visibility = "invisible"
         }
 
-        def Cube "WallProxy_07" (
-            prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"]
-        )
+        def Cube "WallProxy_07"
         {
-            bool physics:collisionEnabled = 1
-            rel material:binding:physics = </C9_ContainmentPod/Looks/ContainmentPhysicsMaterial>
             float xformOp:rotateZ = 315
             double3 xformOp:scale = (3, 11.6, 27)
             double3 xformOp:translate = (21.9203, -21.9203, 31)
