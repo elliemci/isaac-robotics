@@ -75,10 +75,12 @@ from r17_physics import (
     run_physics_probe,
 )
 
+from r17_physics_outlines import OUTLINE_LAYER_NAME, collect_outline_geometry, write_outlines_layer
 from r17_simready import (
-    FIXES_NOT_IMPLEMENTED_MESSAGE,
+    FIXES_APPLYING,
+    FIXES_ERROR,
+    FIXES_IMPLEMENTED,
     SIMREADY_ERROR,
-    SIMREADY_FIXES_NOT_IMPLEMENTED,
     SIMREADY_IDLE,
     SIMREADY_NOT_READY,
     SIMREADY_PASS,
@@ -88,6 +90,7 @@ from r17_simready import (
     initial_simready_state,
     run_simready_validation,
 )
+from r17_simready_fix import FIXED_MESSAGE, apply_fixes, check_fix_guard, fixed_output_paths
 
 ROOT = Path(__file__).resolve().parents[1]
 SESSION_ROOT = ROOT.parent
@@ -115,7 +118,7 @@ R17_RENDER_COMMAND = "render.setMode"
 R17_LIDAR_COMMAND = "lidar.setEnabled"
 R17_PHYSICS_COMMAND = "physics.play"
 R17_SIMREADY_COMMAND = "simready.validateTargets"
-R17_SIMREADY_FIXES_COMMAND = "simready.applyFixes"
+R17_SIMREADY_FIX_COMMAND = "simready.fixTargets"
 R17_VALID_OFFSETS = {-15, 0, 15}
 R17_PRESET_VIEWS = ("DEFAULT", "CUBE_FOCUS")
 R17_VIEWS = R17_PRESET_VIEWS + ("CUSTOM",)
@@ -158,6 +161,7 @@ def make_composite_stage(
     camera_layer: Path = CAMERA_LAYER,
     semantics_layer: Path = SEMANTICS_LAYER,
     lidar_layer: Path = LIDAR_LAYER,
+    outlines_layer: Path | None = None,
 ) -> str:
     base_ref = str(BASE_STAGE.expanduser().resolve()).replace("\\", "/")
     scene_ref = str(scene_path.expanduser().resolve()).replace("\\", "/")
@@ -169,13 +173,18 @@ def make_composite_stage(
     semantics_ref = str(Path(semantics_layer).expanduser().resolve()).replace("\\", "/")
     lidar_ref = str(Path(lidar_layer).expanduser().resolve()).replace("\\", "/")
     v_aperture = H_APERTURE * float(height) / float(width)
+    # Physics outlines exist only after a user-initiated fix; they compose
+    # strongest so the wireframes sit over the fixed scene.
+    outlines_ref = (
+        f"@{str(Path(outlines_layer).expanduser().resolve())}@,\n        " if outlines_layer is not None else ""
+    ).replace("\\", "/")
     return f'''#usda 1.0
 (
     customLayerData = {{
         bool populateAllAuthoredAttributes = true
     }}
     subLayers = [
-        @{camera_ref}@,
+        {outlines_ref}@{camera_ref}@,
         @{semantics_ref}@,
         @{lidar_ref}@,
         @{base_ref}@,
@@ -588,6 +597,8 @@ class AtticPortalServer:
         self.simready_stage_path = default_stage_path(SESSION_ROOT)
         self.simready_pod_path = default_pod_path(SESSION_ROOT)
         self.r17_simready = initial_simready_state(self.simready_stage_path, self.simready_pod_path)
+        # Viewer-owned physics outlines; None until a user-initiated fix succeeds.
+        self.r17_outlines_layer: Path | None = None
         self.artifact_frame = ARTIFACT_DIR / "attic-portal-first-frame.png"
         self.composite_stage = ARTIFACT_DIR / "attic-portal-composite.usda"
         self.renderer_create_count = 0
@@ -624,7 +635,12 @@ class AtticPortalServer:
     def simready_payload(self) -> dict[str, Any]:
         """Server-authoritative SimReady Validate readout (a copy)."""
 
-        return {**self.r17_simready, "missing": list(self.r17_simready["missing"]), "targets": list(self.r17_simready["targets"]), "fixes": dict(self.r17_simready["fixes"])}
+        return {
+            **self.r17_simready,
+            "missing": list(self.r17_simready["missing"]),
+            "targets": list(self.r17_simready["targets"]),
+            "fixes": {**self.r17_simready["fixes"], "outputs": list(self.r17_simready["fixes"]["outputs"])},
+        }
 
     def physics_payload(self) -> dict[str, Any]:
         """Server-authoritative Physics Probe readout (a copy, safe to serialize)."""
@@ -877,6 +893,7 @@ class AtticPortalServer:
             self.r17_camera_layer,
             self.r17_semantics_layer,
             self.r17_lidar_layer,
+            self.r17_outlines_layer,
         )
 
     def set_lidar_enabled(self, enabled: bool) -> None:
@@ -1127,8 +1144,8 @@ class AtticPortalServer:
             self.handle_r17_simready_command(request_id, payload)
             return
 
-        if command == R17_SIMREADY_FIXES_COMMAND:
-            self.handle_r17_simready_fixes_command(request_id, payload)
+        if command == R17_SIMREADY_FIX_COMMAND:
+            self.handle_r17_simready_fix_command(request_id, payload)
             return
 
         if command != R17_POSE_COMMAND:
@@ -1600,7 +1617,7 @@ class AtticPortalServer:
         try:
             result = run_simready_validation(self.simready_stage_path, self.simready_pod_path)
         except Exception as exc:
-            simready.update(status=SIMREADY_ERROR, message="SimReady validation failed", error=str(exc), missingCount=0, missing=[], targets=[])
+            simready.update(status=SIMREADY_ERROR, message="SimReady validation failed", error=str(exc), missingCount=0, missing=[], targets=[], report=None)
             self.last_error = str(exc)
             logging.exception("R-17 SimReady validation failed")
             self.send_r17_state(request_id, status="ERROR", command=command, message="SimReady validation failed", error=str(exc))
@@ -1613,16 +1630,30 @@ class AtticPortalServer:
         logging.info("R-17 SimReady: request=%s status=%s missing=%d", request_id, status, count)
         self.send_r17_state(request_id, status="READY", command=command, message=message)
 
-    def handle_r17_simready_fixes_command(self, request_id: str, payload: dict[str, Any]) -> None:
-        """Mission 3 Part 1: "run fixes" is inert.
+    def reload_stage(self) -> None:
+        """Reopen the composite for the current stage_path on the renderer owner.
 
-        Only reports that fixes are not implemented. It opens no layer, authors
-        no USD or schema, writes no file, runs no validation or physics, and
-        never touches the renderer; it mutates in-memory `fixes` and replies once.
-        The validation result (status, missing, targets) is left as it was.
+        Same renderer, same owner thread: only the composite is reopened, so
+        renderer_owner_count stays 1. Camera, semantics and LiDAR layers are
+        prepared again by load_stage(), and the Memory Cube bindings are
+        rebuilt because the old ones point into the replaced stage.
         """
 
-        command = R17_SIMREADY_FIXES_COMMAND
+        self.load_stage()
+        self.verify_memory_cube()
+        self.initialize_r17_memory_cube()
+
+    def handle_r17_simready_fix_command(self, request_id: str, payload: dict[str, Any]) -> None:
+        """Mission 3 Part 2: apply the report-driven RB.MB.001 fixes.
+
+        Guarded three ways before anything is written: an explicit
+        userInitiated flag, a current report with a repairable RB.MB.001
+        finding, and source paths and SHA-256 that still match that report.
+        It authors only the two *_Mission_3_Fixed.usda outputs and the
+        viewer-owned outlines layer; the Mission 2 sources are never touched.
+        """
+
+        command = R17_SIMREADY_FIX_COMMAND
         inner = payload.get("payload")
         if not isinstance(inner, dict) or inner.get("userInitiated") is not True:
             self.send_r17_state(
@@ -1639,17 +1670,67 @@ class AtticPortalServer:
         self.r17_seen_request_ids.add(request_id)
         self.trim_seen_request_ids()
 
-        fixes = self.r17_simready["fixes"]
+        simready = self.r17_simready
+        fixes = simready["fixes"]
+        reason = check_fix_guard(simready, self.simready_stage_path, self.simready_pod_path)
+        if reason:
+            fixes["reason"] = reason
+            logging.info("R-17 SimReady fixes rejected: request=%s reason=%s", request_id, reason)
+            self.send_r17_state(request_id, status="ERROR", command=command, message="Fixes rejected", error=reason)
+            return
+
         fixes["runCount"] += 1
-        fixes.update(status=SIMREADY_FIXES_NOT_IMPLEMENTED, appliedCount=0, outlineVisible=False, message=FIXES_NOT_IMPLEMENTED_MESSAGE)
-        logging.info("R-17 SimReady fixes: request=%s status=%s (inert)", request_id, SIMREADY_FIXES_NOT_IMPLEMENTED)
-        self.send_r17_state(
-            request_id,
-            status="ERROR",
-            command=command,
-            message=FIXES_NOT_IMPLEMENTED_MESSAGE,
-            error=FIXES_NOT_IMPLEMENTED_MESSAGE,
+        fixes.update(status=FIXES_APPLYING, reason="", message="Applying fixes")
+        self.send_r17_state(request_id, status="APPLYING", command=command, message="Applying fixes")
+        stage_out, pod_out = fixed_output_paths(SESSION_ROOT)
+        outlines_path = ARTIFACT_DIR / OUTLINE_LAYER_NAME
+        previous_stage, previous_outlines = self.stage_path, self.r17_outlines_layer
+        reopened = False
+        try:
+            result = apply_fixes(self.simready_stage_path, self.simready_pod_path, stage_out, pod_out)
+            geometry = collect_outline_geometry(pod_out)
+            geometry["podPath"] = result["podPrimPath"]
+            write_outlines_layer(outlines_path, geometry)
+            self.stage_path, self.r17_outlines_layer = stage_out, outlines_path
+            reopened = True
+            self.reload_stage()
+        except Exception as exc:
+            self.stage_path, self.r17_outlines_layer = previous_stage, previous_outlines
+            if reopened:
+                for leftover in (stage_out, pod_out, outlines_path):
+                    leftover.unlink(missing_ok=True)
+                try:
+                    self.reload_stage()
+                except Exception:
+                    logging.exception("R-17 SimReady fix rollback could not reload the original stage")
+            fixes.update(status=FIXES_ERROR, appliedCount=0, outlineVisible=False, outputs=[], message="Fixes failed", reason=str(exc))
+            self.last_error = str(exc)
+            logging.exception("R-17 SimReady fixes failed")
+            self.send_r17_state(request_id, status="ERROR", command=command, message="Fixes failed", error=str(exc))
+            return
+
+        self.simready_stage_path, self.simready_pod_path = stage_out, pod_out
+        simready.update(
+            status=SIMREADY_IDLE,
+            stagePath=str(stage_out),
+            podPath=str(pod_out),
+            missingCount=0,
+            missing=[],
+            targets=[],
+            report=None,
+            message=FIXED_MESSAGE,
+            error="",
         )
+        fixes.update(
+            status=FIXES_IMPLEMENTED,
+            appliedCount=int(result["appliedCount"]),
+            outlineVisible=True,
+            outputs=list(result["outputs"]),
+            message=FIXED_MESSAGE,
+            reason="",
+        )
+        logging.info("R-17 SimReady fixes: request=%s applied=%d outputs=%s", request_id, fixes["appliedCount"], fixes["outputs"])
+        self.send_r17_state(request_id, status="READY", command=command, message=FIXED_MESSAGE)
 
     def enable_r17_lidar(self, request_id: str, command: str) -> None:
         # The already-enabled sensor acknowledges the current result without

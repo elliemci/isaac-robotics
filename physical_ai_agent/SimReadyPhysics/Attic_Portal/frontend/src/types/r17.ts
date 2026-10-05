@@ -52,6 +52,8 @@ export type R17SimReadyStatus = 'IDLE' | 'RUNNING' | 'NOT_SIMREADY' | 'PASS' | '
 export type R17SimReadyMissing = {
   target: string;
   rule: string;
+  /** Project rule id, e.g. RB.MB.001; empty for findings without one. */
+  ruleId: string;
   prim: string;
   detail: string;
 };
@@ -64,13 +66,37 @@ export type R17SimReadyTarget = {
 };
 
 export type R17SimReadyFixes = {
-  status: 'IDLE' | 'NOT_IMPLEMENTED';
+  status: 'IDLE' | 'APPLYING' | 'IMPLEMENTED' | 'ERROR';
   runCount: number;
-  /** Always 0 in Part 1: nothing is applied. */
   appliedCount: number;
-  /** Always false in Part 1: no outline is drawn. */
+  /** True only after a successful fix: the viewer-owned outline layer is composed. */
   outlineVisible: boolean;
+  outputs: string[];
   message: string;
+  /** Why the last fix request was rejected or failed; empty otherwise. */
+  reason: string;
+};
+
+export type R17SimReadyProxies = {
+  floor: string;
+  usable: string[];
+  rejected: Array<{ prim: string; reason: string }>;
+  wallCount: number;
+  openingSlack: number | null;
+  openingBestYawDeg: number | null;
+  cubeSize: number | null;
+  ok: boolean;
+};
+
+/** The exact sources a validation run described; a fix must match it. */
+export type R17SimReadyReport = {
+  reportId: string;
+  stagePath: string;
+  podPath: string;
+  sha256: { stage: string; pod: string };
+  ruleIds: string[];
+  repairable: boolean;
+  proxies: R17SimReadyProxies | null;
 };
 
 export type R17SimReadyState = {
@@ -81,6 +107,7 @@ export type R17SimReadyState = {
   missingCount: number;
   missing: R17SimReadyMissing[];
   targets: R17SimReadyTarget[];
+  report: R17SimReadyReport | null;
   fixes: R17SimReadyFixes;
   message: string;
   error: string;

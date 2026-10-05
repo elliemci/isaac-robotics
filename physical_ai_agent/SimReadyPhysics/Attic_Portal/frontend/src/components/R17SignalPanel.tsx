@@ -116,6 +116,19 @@ export function R17SignalPanel() {
   const physicsControlsDisabled = viewControlsDisabled;
   // SimReady Validate is read-only USD inspection; same gate as the physics probe.
   const simreadyControlsDisabled = viewControlsDisabled;
+  // run fixes needs a current report with a repairable RB.MB.001 finding. The
+  // server enforces the same rule (and the source hashes); this only explains it.
+  const fixesReason = !simready?.report
+    ? 'Run targets first: no current report.'
+    : simready.fixes.status !== 'IDLE'
+      ? ''
+      : !simready.report.ruleIds.includes('RB.MB.001')
+        ? 'No RB.MB.001 finding to fix.'
+        : !simready.report.repairable
+          ? 'RB.MB.001 is not repairable from the existing proxies.'
+          : '';
+  const fixesControlsDisabled =
+    simreadyControlsDisabled || !simready?.report?.repairable || simready.fixes.status !== 'IDLE';
 
   return (
     <aside className="r17-signal-panel" aria-label="R-17 Signal Panel">
@@ -271,13 +284,16 @@ export function R17SignalPanel() {
           <span>{`fixes ${simready?.fixes?.status ?? 'IDLE'}`}</span>
           <span>{`applied ${simready?.fixes?.appliedCount ?? 0}`}</span>
         </div>
-        {simready?.fixes?.status === 'NOT_IMPLEMENTED' ? <div className="r17-cube-path">{simready.fixes.message}</div> : null}
+        {fixesControlsDisabled && fixesReason ? <div className="r17-cube-path">{`run fixes disabled: ${fixesReason}`}</div> : null}
+        {simready && simready.fixes.status !== 'IDLE' ? <div className="r17-cube-path">{simready.fixes.message}</div> : null}
+        {simready?.fixes?.reason ? <div className="r17-simready-error">{simready.fixes.reason}</div> : null}
+        {simready?.fixes?.outlineVisible ? <div className="r17-cube-path">outlines: CollisionAPI green, RigidBodyAPI orange</div> : null}
         {simready?.error ? <div className="r17-simready-error">{simready.error}</div> : null}
         {simready && simready.missing.length > 0 ? (
           <ul className="r17-simready-missing" aria-label="Missing requirements">
             {simready.missing.map((item, index) => (
               <li key={`${item.target}-${item.rule}-${item.prim}-${index}`}>
-                <strong>{item.rule}</strong> {item.prim} — {item.detail}
+                <strong>{item.ruleId ? `${item.ruleId} ` : ''}{item.rule}</strong> {item.prim} — {item.detail}
               </li>
             ))}
           </ul>
@@ -295,9 +311,9 @@ export function R17SignalPanel() {
           run targets
         </R17CommandButton>
         <R17CommandButton
-          command="simready.applyFixes"
+          command="simready.fixTargets"
           payload={{ userInitiated: true }}
-          disabled={simreadyControlsDisabled}
+          disabled={fixesControlsDisabled}
           onRequestStart={setInFlightRequestId}
           onRequestState={handleCorrelatedState}
         >

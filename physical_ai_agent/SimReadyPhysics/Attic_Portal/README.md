@@ -61,19 +61,31 @@ Validate against a freshly started server:
 python validation/browser_physics_smoke.py   # writes artifacts/r17-physics-probe.png
 ```
 
-## SimReady Validate: run targets / run fixes (Mission 3, Part 1)
+## SimReady Validate: run targets / run fixes (Mission 3, Part 2)
 
-The **SimReady Validate** section has two adjacent buttons. **run targets**
-(`simready.validateTargets`) runs the read-only validation. **run fixes**
-(`simready.applyFixes`) is inert in Part 1: it only sets
-`simready.fixes = {status: "NOT_IMPLEMENTED", appliedCount: 0, outlineVisible: false}`
-and replies "Fixes are not implemented". It runs no validation, authors no USD
-or schema, writes no output, and does not touch physics or the renderer; the
-earlier validation result is left unchanged. Both commands require
-`userInitiated: true`. Part 2 replaces the body of
-`handle_r17_simready_fixes_command` in `server/attic_portal_server.py`.
+**run targets** (`simready.validateTargets`) validates the Mission 2 stage and
+the containment pod, and stamps a report with the exact source paths and
+SHA-256. **run fixes** (`simready.fixTargets`) stays disabled until the current
+report contains a repairable `RB.MB.001` finding, and the server rejects the
+command otherwise (no report, stale hashes, wrong targets, or already applied).
+
+`RB.MB.001` is this project's own rule: the pod has no rigid body, no mass, or
+no CollisionAPI geometry. It is repairable only when the pod's existing
+collision proxies (floor plus walls) can form an open-top compound collision
+and the Memory Cube still fits the opening at its best yaw (`openingSlack`).
+Proxies named top/lid/ceiling/cap, or covering the opening, are rejected.
+
+On the user's click only, the fixer writes `OldAttic_Mission_3_Fixed.usda` and
+`C9_ContainmentPod_Mission_3_Fixed.usda` (the Mission 2 sources are never
+edited and no backups are made), the viewer-owned
+`artifacts/R17_PhysicsOutlines.usda` is composed (CollisionAPI green,
+RigidBodyAPI orange), the stage reloads from the fixed output, and the panel
+reports exactly `fixes implemented, run report again`. Run targets again to
+validate the fixed outputs; unrelated findings are still reported.
 
 ```bash
-source env.sh && ./scripts/restart.sh        # fresh server
-python validation/browser_simready_run_fixes.py   # writes artifacts/r17-mission3-part1-inert-fixes.png
+scripts/apply_and_verify_mission3_part2.sh   # in SimReadyPhysics/: build, test, restart, stop at "run fixes enabled"
 ```
+
+That script never clicks "run fixes". The portal streams to ONE WebRTC client,
+so close any open Attic browser tab before running it.
