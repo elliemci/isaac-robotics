@@ -1,0 +1,40 @@
+{
+  "artifact": "simready-fixed-scene-validation",
+  "generatedAt": "2026-10-06T18:44:27.287420+00:00",
+  "mode": "read-only validation (r17_simready.run_simready_validation); nothing authored, no simulation",
+  "result": {
+    "missingCount": 0,
+    "targets": [
+      {
+        "target": "mission_2_stage",
+        "path": "/home/elliemcintosh/Documents/isaac-robotics/physical_ai_agent/SimReadyPhysics/OldAttic_Mission_3_Fixed.usda",
+        "status": "PASS",
+        "missingCount": 0
+      },
+      {
+        "target": "containment_pod",
+        "path": "/home/elliemcintosh/Documents/isaac-robotics/physical_ai_agent/SimReadyPhysics/C9_ContainmentPod_Mission_3_Fixed.usda",
+        "status": "PASS",
+        "missingCount": 0
+      }
+    ],
+    "missing": [],
+    "ruleIds": null
+  },
+  "report": {
+    "reportId": "30d957bcedbc4cd1970f74b8073b7afd",
+    "stagePath": "/home/elliemcintosh/Documents/isaac-robotics/physical_ai_agent/SimReadyPhysics/OldAttic_Mission_3_Fixed.usda",
+    "podPath": "/home/elliemcintosh/Documents/isaac-robotics/physical_ai_agent/SimReadyPhysics/C9_ContainmentPod_Mission_3_Fixed.usda",
+    "sha256": {
+      "stage": "a9f2101800f6883c5ad1fd6130105e38487d1cfb98d664f37e208bd9682ecf6b",
+      "pod": "ce290c36440051d6ee3282656ba91c9183861ad809572c22a5404ced1c7592b4"
+    },
+    "ruleIds": [],
+    "repairable": false,
+    "proxies": null
+  },
+  "protectedSourceSha256": {
+    "OldAttic_Mission_2.usda": "1b181728eca0346bc0adb288664fee7ef4eb455269e94b9c341fafb4d78279d6",
+    "C9_ContainmentPod.usda": "5c5a11052bf8eafd98fb4a025ab366395a4fe6759b0e85f769bffa6f2f42a5e3"
+  }
+}
