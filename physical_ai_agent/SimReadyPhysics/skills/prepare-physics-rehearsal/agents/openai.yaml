@@ -1,0 +1,4 @@
+interface:
+  display_name: "Prepare Physics Rehearsal"
+  short_description: "Take an OpenUSD scene from read-only physics diagnosis to a reviewable, physics-ready rehearsal with ovphysx proof."
+  default_prompt: "Use $prepare-physics-rehearsal to plan or run a physics-ready rehearsal for this OpenUSD scene, asking for any missing targets, profiles, units, axes, body roles, PhysicsScene mapping, and acceptance criteria."
