@@ -1,0 +1,4 @@
+interface:
+  display_name: "Physics Picker Experience"
+  short_description: "Plan a physics-aware drag picker using ovstream, ovrtx hits and ovphysx forces, with no direct transform writes."
+  default_prompt: "Use $physics-picker-experience to plan a physics-aware picker for this OpenUSD scene, reusing $prepare-physics-rehearsal for diagnosis through revalidation and asking for any missing targets, body roles, units, PhysicsScene mapping, force limits, and acceptance criteria."
