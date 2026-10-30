@@ -16,6 +16,22 @@ A collection of NVIDIA Isaac Sim, Isaac Lab, Isaac ROS and Omniverse projects, m
 | F | **Physical AI Agent Bootcamp apps (Attic Portal)** | A browser-streamed RTX viewer (ovrtx + ovstream) that grows into the SimReady physics missions: validate a scene, apply guarded fixes (rule `RB.MB.001`), build a physics-ready stage, and a user-controlled Play. Includes two agent skills, `prepare-physics-rehearsal` and `physics-picker-experience`. | `physical_ai_agent/SimReadyPhysics/` (newest: Mission USDAs, `Attic_Portal/server/r17_*.py`, `scripts/apply_and_verify_mission*.sh`, `skills/`), `physical_ai_agent/RTXViewport/Attic_Portal` | `cd physical_ai_agent/SimReadyPhysics/Attic_Portal && source env.sh && ./scripts/restart.sh`. Health check: `curl http://127.0.0.1:8081/healthz`. Needs the course material bundle unpacked locally (see below). | [Physical AI Agent Bootcamp](https://docs.nvidia.com/learning/physical-ai/physical-ai-agent-bootcamp/latest/index.html) |
 | G | **ovrtx (vendored)** | NVIDIA's open-source ovrtx 0.3.0 renderer, copied in unmodified. Used by F. | `physical_ai_agent/ovrtx/` | See `physical_ai_agent/ovrtx/README.md`. | [NVIDIA-Omniverse/ovrtx](https://github.com/NVIDIA-Omniverse/ovrtx) |
 
+### About B: Nav2 two-Carter warehouse
+
+This sub-project follows NVIDIA's "Simulation Interfaces" lesson (Going Further With Robotics, multi-robot scene workflows). A ROS 2 script uses Isaac Sim's simulation-interfaces services (`load_world`, `spawn_entity`, `get_entity_state`, `set_entity_state`, `set_simulation_state`, `unload_world`) to build the warehouse scene, spawn a table, a cube and a Nova Carter (`carter1`), and then lets Nav2 drive the Carter to the table while a Limo is spawned on the table to push the cube off (two trials). The script is NVIDIA's (`workshop_learning_script_final.py`, outside this repo, run unmodified). The Nav2 side is `ros_ws/src/carter_navigation/`: a namespaced two-robot launch (`carter1`, `carter2`), per-robot params, a map of the scene and RViz configs. The recording below is a headless Isaac Sim run of that lesson with Nav2 started without RViz; only `carter1` is spawned by the lesson script, so the `carter2` Nav2 stack runs without a robot. The sequence is about 59 s of simulation time, played here at 4x. Known issue: `scripts/launch_nav2_pipeline.sh` and `startup_nav2.py` open `.../Collected_warehouse_test_scene/warehouse_test_scene.usd`, but the folder is `warehouse_test_scene/`, and the shell script looks for `startup_nav2.py` in `scripts/` while it is in the repo root, so they do not start as written. The capture used its own startup (`docs/capture/run_nav2_lesson.sh`).
+
+![Nav2 lesson run](docs/media/nav2_two_carter/nav2-lesson-4x.gif)
+*The lesson scenario in headless Isaac Sim: Nav2 drives the Carter to the table, then the Limo pushes the cube off (4x speed).*
+
+![Carter arrives at the table](docs/media/nav2_two_carter/01-carter-arrives-at-table.png)
+*Nav2 has driven `carter1` to the goal beside the table (cube on the tabletop).*
+
+![Limo on the table](docs/media/nav2_two_carter/02-limo-on-table-cube.png)
+*The Limo is spawned on the tabletop and pushes the cube towards the edge.*
+
+![Cube pushed off](docs/media/nav2_two_carter/03-cube-pushed-carter-leaves.png)
+*The cube is gone from the table and the Carter drives to its drop-off pose.*
+
 ### About C: H1 humanoid
 
 `h1_ros_locomotion_wearhouse.usd` places the Unitree H1 (`Collected_h1_ROS/h1_ROS.usd`) in a scene with three ROS 2 OmniGraphs: `ROS_JointStates` (publishes `/joint_states`, subscribes `/joint_command` and applies it through an articulation controller), `ROS_Imu` (reads the pelvis IMU sensor) and `ROS_Clock`. The scene wiring follows NVIDIA's "Going Further With Robotics" digital-twin lesson, where the H1 is driven over ROS 2 by NVIDIA's pre-trained policy and keyboard teleoperation. The scene has no policy of its own. Note: `/World/warehouse` points to `assets/environments/warehouse/warehouse.usd`, which is not in the repo, so the warehouse does not load (the repo has `assets/environments/Collected_warehouse/`). The training visuals below come from a short demo run of Isaac Lab's built-in `Isaac-Velocity-Flat-H1-v0` task (skrl PPO, 300 iterations, 2048 environments, about 8 minutes on one L4). The run's logs stay in the Isaac Lab checkout (`logs/skrl/h1_flat/`), not in this repo, and it is not the policy from the course.
