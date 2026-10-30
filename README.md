@@ -16,6 +16,25 @@ A collection of NVIDIA Isaac Sim, Isaac Lab, Isaac ROS and Omniverse projects, m
 | F | **Physical AI Agent Bootcamp apps (Attic Portal)** | A browser-streamed RTX viewer (ovrtx + ovstream) that grows into the SimReady physics missions: validate a scene, apply guarded fixes (rule `RB.MB.001`), build a physics-ready stage, and a user-controlled Play. Includes two agent skills, `prepare-physics-rehearsal` and `physics-picker-experience`. | `physical_ai_agent/SimReadyPhysics/` (newest: Mission USDAs, `Attic_Portal/server/r17_*.py`, `scripts/apply_and_verify_mission*.sh`, `skills/`), `physical_ai_agent/RTXViewport/Attic_Portal` | `cd physical_ai_agent/SimReadyPhysics/Attic_Portal && source env.sh && ./scripts/restart.sh`. Health check: `curl http://127.0.0.1:8081/healthz`. Needs the course material bundle unpacked locally (see below). | [Physical AI Agent Bootcamp](https://docs.nvidia.com/learning/physical-ai/physical-ai-agent-bootcamp/latest/index.html) |
 | G | **ovrtx (vendored)** | NVIDIA's open-source ovrtx 0.3.0 renderer, copied in unmodified. Used by F. | `physical_ai_agent/ovrtx/` | See `physical_ai_agent/ovrtx/README.md`. | [NVIDIA-Omniverse/ovrtx](https://github.com/NVIDIA-Omniverse/ovrtx) |
 
+### About C: H1 humanoid
+
+`h1_ros_locomotion_wearhouse.usd` places the Unitree H1 (`Collected_h1_ROS/h1_ROS.usd`) in a scene with three ROS 2 OmniGraphs: `ROS_JointStates` (publishes `/joint_states`, subscribes `/joint_command` and applies it through an articulation controller), `ROS_Imu` (reads the pelvis IMU sensor) and `ROS_Clock`. The scene wiring follows NVIDIA's "Going Further With Robotics" digital-twin lesson, where the H1 is driven over ROS 2 by NVIDIA's pre-trained policy and keyboard teleoperation. The scene has no policy of its own. Note: `/World/warehouse` points to `assets/environments/warehouse/warehouse.usd`, which is not in the repo, so the warehouse does not load (the repo has `assets/environments/Collected_warehouse/`). The training visuals below come from a short demo run of Isaac Lab's built-in `Isaac-Velocity-Flat-H1-v0` task (skrl PPO, 300 iterations, 2048 environments, about 8 minutes on one L4). The run's logs stay in the Isaac Lab checkout (`logs/skrl/h1_flat/`), not in this repo, and it is not the policy from the course.
+
+![H1 asset orbit](docs/media/h1_humanoid/h1-asset-orbit.gif)
+*The H1 asset from `h1_ros_locomotion_wearhouse.usd` in Isaac Sim (rendered headless, warehouse missing).*
+
+![H1 ROS 2 graphs](docs/media/h1_humanoid/02-h1-ros2-graphs.png)
+*The three ROS 2 OmniGraphs in the scene: joint states and commands, IMU, and clock.*
+
+![H1 training curves](docs/media/h1_humanoid/03-h1-training-curves.png)
+*Short `Isaac-Velocity-Flat-H1-v0` demo run: total reward rises from about -5.3 to 17.4 and episodes reach the 1000-step limit after about 2000 timesteps.*
+
+![H1 early checkpoint](docs/media/h1_humanoid/05-h1-early-checkpoint.png) ![H1 trained policy](docs/media/h1_humanoid/04-h1-trained-policy.png)
+*The same task after 720 timesteps (left, crouched) and after 7200 timesteps (right, walking upright).*
+
+![H1 trained rollout](docs/media/h1_humanoid/h1-rollout.gif)
+*The demo run's final checkpoint following random velocity commands (6 robots, recorded with Isaac Lab's `--video` option).*
+
 ### About E: Isaac Lab training
 
 `isaaclab_training/` is an out-of-tree Isaac Lab package. Importing it registers two tasks with Gymnasium: `Template-Cartpole-v0` (the stock cartpole setup, trained as a first check of the workflow) and `Template-UR10-Reach-v0`, a UR10 with a gripper (`reach/ur_gripper.py`, `UR-with-gripper.usd`) that must move its end effector to a commanded pose. The reach task is the part I changed: custom reward shaping (`reach/mdp/rewards.py`, position error with tanh and fine-grained variants) and a curriculum in `reach/reach_env_cfg.py`. Both tasks train with skrl PPO through `workflows/train_skrl.py` and replay with `workflows/play_skrl.py`. `isaac_training/reach/` is the unmodified NVIDIA project template, kept for reference. Runs and checkpoints are in `logs/skrl/` (1 cartpole run, 10 reach runs).
