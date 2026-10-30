@@ -1,0 +1,4 @@
+interface:
+  display_name: "R17 Inspection Mode"
+  short_description: "Add focus, semantic, and Lidar inspection to a streamed ovrtx viewer."
+  default_prompt: "Prepare this streamed USD viewer for robot inspection: add a target-focused camera, a semantic view, and an optional Lidar evidence panel. Plan first and do not modify the live viewer."

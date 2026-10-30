@@ -29,6 +29,26 @@ Course structure as I understand it:
 
 `Attic_NVIDIA.usd` and the other large base assets are **not tracked** (gitignored). They come with the course material bundle, and the tracked USD layers point at the folder where you unpacked it.
 
+**Visuals** (captured headless from the running portal with `docs/capture/capture_attic_portal.py`; the R-17 panel and its server modules are mine, the starter viewer and scene are from the course):
+
+![Portal first frame](docs/media/physical_ai_agent/01-portal-first-frame.png)
+*Mission 1: the browser-streamed RTX attic viewport with the R-17 Signal Panel connected and READY.*
+
+![Cube Link](docs/media/physical_ai_agent/cube-link.gif)
+*Mission 2: LEFT POSE -15, HOME and RIGHT POSE +15 move `/Root/Workshop/Cube` through the USD stage.*
+
+![Camera default](docs/media/physical_ai_agent/03-camera-default.png) ![Camera cube focus](docs/media/physical_ai_agent/03-camera-cube-focus.png)
+*Mission 2: default view and the non-destructive `/Session/Cameras/R17CubeFocus` preset (authored in `R17_Camera.usda`).*
+
+![Perception modes](docs/media/physical_ai_agent/perception.gif)
+*Mission 3: beauty, semantic segmentation and the LiDAR point-cloud preview, switched from the panel.*
+
+![SimReady before](docs/media/physical_ai_agent/05-simready-before.png) ![SimReady after](docs/media/physical_ai_agent/05-simready-after.png)
+*Mission 3: SimReady validation of the containment pod, 3 missing `RB.MB.001` requirements before and PASS after the guarded fixes.*
+
+![Physics rehearsal](docs/media/physical_ai_agent/physics.gif)
+*Mission 4: user-controlled PLAY on the physics-ready stage (2 rigid bodies, 11 colliders), the cube drops towards the pod.*
+
 ## Shared folders
 
 | Folder | Used by |

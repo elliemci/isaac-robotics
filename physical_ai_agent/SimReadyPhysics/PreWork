@@ -1,0 +1,127 @@
+#!/usr/bin/env bash
+set -euo pipefail
+START_SECONDS=$SECONDS
+
+SESSION_2_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+WORKSPACE_ROOT="$(cd "$SESSION_2_ROOT/.." && pwd)"
+SESSION_1_ROOT="${SESSION_1_ROOT:-$WORKSPACE_ROOT/Session_1}"
+TARGET_ROOT="${ATTIC_PORTAL_TARGET:-$SESSION_1_ROOT/Attic_Portal}"
+MISSION_STAGE="${ATTIC_PORTAL_MISSION_STAGE:-$SESSION_2_ROOT/OldAttic_Mission_2.usda}"
+CHECKPOINT_3="$SESSION_1_ROOT/Checkpoints/checkpoint_3"
+PREFLIGHT_MISSION_1="$SESSION_2_ROOT/scripts/preflight_mission_1.sh"
+PREFLIGHT_MISSION_2="$SESSION_2_ROOT/scripts/preflight_mission_2.sh"
+PREFLIGHT_MISSION_4="$SESSION_2_ROOT/scripts/preflight_mission_4.sh"
+HEALTH_PORT="${ATTIC_PORTAL_HEALTH_PORT:-8082}"
+SIGNALING_PORT="${ATTIC_PORTAL_SIGNALING_PORT:-49101}"
+CLIENT_PORT="${ATTIC_PORTAL_CLIENT_PORT:-5176}"
+OPEN_FINAL_BROWSER="${OPEN_FINAL_BROWSER:-1}"
+REPORT_DIR="${PREWORK_REPORT_DIR:-$SESSION_2_ROOT/reports}"
+REPORT="$REPORT_DIR/prework.txt"
+LOG_DIR="$TARGET_ROOT/logs"
+
+mkdir -p "$REPORT_DIR"
+: > "$REPORT"
+exec > >(tee -a "$REPORT") 2>&1
+
+fail() {
+  printf 'Session_2 PreWork: ERROR: %s\n' "$*" >&2
+  exit 1
+}
+
+public_ip() {
+  if [[ -n "${ATTIC_PORTAL_PUBLIC_IP:-}" ]]; then
+    printf '%s\n' "$ATTIC_PORTAL_PUBLIC_IP"
+  else
+    hostname -I 2>/dev/null | awk '{print $1; exit}'
+  fi
+}
+
+for command in curl jq rg sha256sum firefox; do
+  command -v "$command" >/dev/null 2>&1 || fail "missing command: $command"
+done
+[[ -x "$CHECKPOINT_3" ]] || fail "missing Session 1 checkpoint_3: $CHECKPOINT_3"
+[[ -x "$PREFLIGHT_MISSION_1" ]] || fail "missing Mission 1 preflight: $PREFLIGHT_MISSION_1"
+[[ -x "$PREFLIGHT_MISSION_2" ]] || fail "missing Mission 2 preflight: $PREFLIGHT_MISSION_2"
+[[ -x "$PREFLIGHT_MISSION_4" ]] || fail "missing Mission 4 preflight: $PREFLIGHT_MISSION_4"
+[[ -f "$MISSION_STAGE" ]] || fail "missing Mission 2 stage: $MISSION_STAGE"
+[[ "$OPEN_FINAL_BROWSER" == "0" || "$OPEN_FINAL_BROWSER" == "1" ]] || fail "OPEN_FINAL_BROWSER must be 0 or 1"
+
+MISSION_STAGE="$(realpath -e "$MISSION_STAGE")"
+PUBLIC_IP="$(public_ip)"
+[[ -n "$PUBLIC_IP" ]] || PUBLIC_IP="127.0.0.1"
+BROWSER_URL="http://127.0.0.1:$CLIENT_PORT/?server=$PUBLIC_IP&signalingport=$SIGNALING_PORT"
+mission_hash_before="$(sha256sum "$MISSION_STAGE" | awk '{print $1}')"
+
+cleanup_recorded_firefox() {
+  mkdir -p "$LOG_DIR"
+  for pid_file in "$LOG_DIR"/*firefox.pid; do
+    [[ -f "$pid_file" ]] || continue
+    pid="$(cat "$pid_file" 2>/dev/null || true)"
+    if [[ "$pid" =~ ^[0-9]+$ ]] && kill -0 "$pid" 2>/dev/null; then
+      kill "$pid" 2>/dev/null || true
+    fi
+  done
+}
+
+cleanup_recorded_firefox
+
+printf 'Session_2 PreWork: restoring the Session 1 checkpoint_3 baseline\n'
+SESSION_ROOT="$SESSION_1_ROOT" ATTIC_PORTAL_TARGET="$TARGET_ROOT" ATTIC_PORTAL_HEALTH_PORT="$HEALTH_PORT" OPEN_FINAL_BROWSER=0   "$CHECKPOINT_3"
+
+printf 'Session_2 PreWork: switching the checkpoint_3 app to Mission 2\n'
+ATTIC_PORTAL_TARGET="$TARGET_ROOT"   "$SESSION_1_ROOT/Attic_Portal_Prework/scripts/stop_attic_portal.sh"
+
+ATTIC_PORTAL_MISSION_STAGE="$MISSION_STAGE" ATTIC_PORTAL_PUBLIC_IP="$PUBLIC_IP" VITE_SERVER_HOST="$PUBLIC_IP" ATTIC_PORTAL_SIGNALING_PORT="$SIGNALING_PORT" ATTIC_PORTAL_CLIENT_PORT="$CLIENT_PORT" ATTIC_PORTAL_HEALTH_PORT="$HEALTH_PORT" VITE_SIGNALING_PORT="$SIGNALING_PORT"   "$TARGET_ROOT/scripts/restart.sh"
+
+for _ in $(seq 1 120); do
+  if curl -fsS "http://127.0.0.1:$HEALTH_PORT/state.json" 2>/dev/null | jq -e --arg stage "$MISSION_STAGE" '
+    .ready == true and
+    .stage == $stage and
+    .renderer_owner_count == 1 and
+    .lidar.status == "DISABLED" and
+    .lidar.nonvisualMaterialCount >= 106 and
+    (.physics == null)
+  ' >/dev/null 2>&1; then
+    break
+  fi
+  sleep 1
+done
+
+printf 'Session_2 PreWork: running Mission 1 preflight\n'
+SESSION_1_ROOT="$SESSION_1_ROOT" ATTIC_PORTAL_TARGET="$TARGET_ROOT" ATTIC_PORTAL_MISSION_STAGE="$MISSION_STAGE" ATTIC_PORTAL_HEALTH_PORT="$HEALTH_PORT" PREWORK_REPORT_DIR="$REPORT_DIR"   "$PREFLIGHT_MISSION_1"
+
+printf 'Session_2 PreWork: running dependency-only Mission 2 preflight (no targets)\n'
+SESSION_1_ROOT="$SESSION_1_ROOT" ATTIC_PORTAL_TARGET="$TARGET_ROOT" ATTIC_PORTAL_MISSION_STAGE="$MISSION_STAGE" ATTIC_PORTAL_HEALTH_PORT="$HEALTH_PORT" PREWORK_REPORT_DIR="$REPORT_DIR"   "$PREFLIGHT_MISSION_2"
+
+printf 'Session_2 PreWork: running dependency-only Mission 4 preflight (no stage build or drop test)\n'
+SESSION_1_ROOT="$SESSION_1_ROOT" ATTIC_PORTAL_TARGET="$TARGET_ROOT" ATTIC_PORTAL_HEALTH_PORT="$HEALTH_PORT" PREWORK_REPORT_DIR="$REPORT_DIR"   "$PREFLIGHT_MISSION_4"
+
+[[ "$(sha256sum "$MISSION_STAGE" | awk '{print $1}')" == "$mission_hash_before" ]] || fail "Mission 2 was modified"
+
+if [[ "$OPEN_FINAL_BROWSER" == "1" ]]; then
+  cleanup_recorded_firefox
+  mkdir -p "$LOG_DIR"
+  connected_before="$(rg -c 'WebRTC connected=True' "$LOG_DIR/server.log" || true)"
+  nohup setsid firefox --new-window "$BROWSER_URL" \
+    > "$LOG_DIR/prework-firefox.log" 2>&1 < /dev/null &
+  echo "$!" > "$LOG_DIR/prework-firefox.pid"
+  for _ in $(seq 1 30); do
+    connected_after="$(rg -c 'WebRTC connected=True' "$LOG_DIR/server.log" || true)"
+    ((connected_after > connected_before)) && break
+    sleep 1
+  done
+  connected_after="$(rg -c 'WebRTC connected=True' "$LOG_DIR/server.log" || true)"
+  ((connected_after > connected_before)) || fail "visible Mission 2 viewer did not connect"
+fi
+
+printf 'Session_2 PreWork: PASS\n'
+printf 'Session_2 PreWork: baseline=Session_1/Checkpoints/checkpoint_3\n'
+printf 'Session_2 PreWork: stage=%s\n' "$MISSION_STAGE"
+printf 'Session_2 PreWork: mission_1_implemented=false\n'
+printf 'Session_2 PreWork: mission_2_preflight=ready\n'
+printf 'Session_2 PreWork: mission_2_targets_executed=false\n'
+printf 'Session_2 PreWork: mission_4_preflight=ready\n'
+printf 'Session_2 PreWork: mission_4_drop_test_executed=false\n'
+printf 'Session_2 PreWork: elapsed_seconds=%s\n' "$((SECONDS - START_SECONDS))"
+printf 'Session_2 PreWork: report=%s\n' "$REPORT"
+printf 'Session_2 PreWork: browser=%s\n' "$BROWSER_URL"

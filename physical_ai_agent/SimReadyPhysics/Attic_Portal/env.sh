@@ -13,7 +13,7 @@ export ATTIC_PORTAL_PYTHON="${ATTIC_PORTAL_PYTHON:-$_ATTIC_OLD_TREE/area_51b_ovr
 export ATTIC_PORTAL_BASE_STAGE="${ATTIC_PORTAL_BASE_STAGE:-$_ATTIC_OLD_TREE/Attic_NVIDIA/Attic_NVIDIA.usd}"
 
 # Scene the server launches with (Mission 2).
-export ATTIC_PORTAL_MISSION_STAGE="${ATTIC_PORTAL_MISSION_STAGE:-$_ATTIC_ROOT/../OldAttic_Mission_2.usda}"
+export ATTIC_PORTAL_MISSION_STAGE="${ATTIC_PORTAL_MISSION_STAGE:-$_ATTIC_ROOT/../OldAttic_Mission_4_Physics.usda}"
 
 # WebRTC needs a routable address, not 127.0.0.1.
 export ATTIC_PORTAL_PUBLIC_IP="${ATTIC_PORTAL_PUBLIC_IP:-$(hostname -I | awk '{print $1}')}"

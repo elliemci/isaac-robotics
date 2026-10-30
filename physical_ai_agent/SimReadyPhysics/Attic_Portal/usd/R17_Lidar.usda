@@ -1452,6 +1452,16 @@ over "Root"
                 custom token omni:simready:nonvisual:base = "none"
                 custom token omni:simready:nonvisual:coating = "none"
             }
+
+            over "Mission4PhysicsMaterial"
+            {
+                custom string inputs:nonvisual:attributes = "none"
+                custom string inputs:nonvisual:base = "none"
+                custom string inputs:nonvisual:coating = "none"
+                custom token[] omni:simready:nonvisual:attributes = ["none"]
+                custom token omni:simready:nonvisual:base = "none"
+                custom token omni:simready:nonvisual:coating = "none"
+            }
         }
     }
 }
