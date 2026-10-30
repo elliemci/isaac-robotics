@@ -16,6 +16,31 @@ A collection of NVIDIA Isaac Sim, Isaac Lab, Isaac ROS and Omniverse projects, m
 | F | **Physical AI Agent Bootcamp apps (Attic Portal)** | A browser-streamed RTX viewer (ovrtx + ovstream) that grows into the SimReady physics missions: validate a scene, apply guarded fixes (rule `RB.MB.001`), build a physics-ready stage, and a user-controlled Play. Includes two agent skills, `prepare-physics-rehearsal` and `physics-picker-experience`. | `physical_ai_agent/SimReadyPhysics/` (newest: Mission USDAs, `Attic_Portal/server/r17_*.py`, `scripts/apply_and_verify_mission*.sh`, `skills/`), `physical_ai_agent/RTXViewport/Attic_Portal` | `cd physical_ai_agent/SimReadyPhysics/Attic_Portal && source env.sh && ./scripts/restart.sh`. Health check: `curl http://127.0.0.1:8081/healthz`. Needs the course material bundle unpacked locally (see below). | [Physical AI Agent Bootcamp](https://docs.nvidia.com/learning/physical-ai/physical-ai-agent-bootcamp/latest/index.html) |
 | G | **ovrtx (vendored)** | NVIDIA's open-source ovrtx 0.3.0 renderer, copied in unmodified. Used by F. | `physical_ai_agent/ovrtx/` | See `physical_ai_agent/ovrtx/README.md`. | [NVIDIA-Omniverse/ovrtx](https://github.com/NVIDIA-Omniverse/ovrtx) |
 
+### About A: Mobile-robot ROS 2 graphs
+
+The USD files in `assets/robots/mobile_robot/` wire Isaac Sim robots to ROS 2 with OmniGraph action graphs. The robots and environments are NVIDIA assets (Turtlebot3 Burger, Jackal, Carter v1, Nova Carter, the Simple Room and Simple Warehouse scenes, mostly loaded from NVIDIA's asset server, so those scenes need an internet connection); the ROS 2 graphs and scene files are mine, following the Isaac Sim ROS 2 tutorials listed in the table. The Turtlebot3 (`ros2_control_turtlebot3.usd`) subscribes to a Twist command and drives its wheels through a differential controller, and a transform-tree variant (`trutlebot3_transformer_tree.usd`) publishes `/odom` and `/tf`. The Jackal-style robot (`four_whee_differential_dive.usd`) uses the same drive graph with four wheels. The Carter v1 scene (`cater_3d_lidar_sensor.usd`) publishes camera (`/rgb`, `camera_info`), IMU, 2D laser scan and 3D lidar point cloud graphs, and `nova_carter_wearhouse.usd` publishes the sim clock with Replicator camera outputs. `turtlebot3_office.usd` points to a `../../turtlebot3/` asset that is not in the repo, so it does not load and is not shown.
+
+![Turtlebot3 driving](docs/media/mobile_robot_ros2/turtlebot3-drive.gif)
+*`ros2_control_turtlebot3.usd` in headless Isaac Sim, driven by `ros2 topic pub /cmd_vel geometry_msgs/msg/Twist` (0.25 m/s forward, 0.35 rad/s turn); the red fan is the scene's lidar scan.*
+
+![Turtlebot3](docs/media/mobile_robot_ros2/01-turtlebot3-closeup.png) ![Turtlebot3 lidar scan](docs/media/mobile_robot_ros2/02-turtlebot3-lidar-scan.png)
+*The Turtlebot3 Burger in the Simple Room, and the same robot with its lidar scan drawn on the floor.*
+
+![Jackal](docs/media/mobile_robot_ros2/03-jackal.png)
+*The Jackal-style four-wheel differential-drive robot (`four_whee_differential_dive.usd`).*
+
+![Carter v1](docs/media/mobile_robot_ros2/04-carter-v1.png) ![Carter v1 camera view](docs/media/mobile_robot_ros2/04-carter-v1-camera-view.png)
+*Carter v1 in the warehouse, and the image its RGB camera (published on `/rgb`) sees.*
+
+![Nova Carter warehouse](docs/media/mobile_robot_ros2/05-nova-carter-warehouse.png)
+*The Nova Carter in `nova_carter_wearhouse.usd`.*
+
+![Turtlebot3 TF tree](docs/media/mobile_robot_ros2/06-turtlebot3-tf-tree.png)
+*The Turtlebot3 transform tree recorded with `view_frames` (`transform_trees/`): world, odom, base_link and the wheel, lidar and IMU frames.*
+
+![ROS 2 graphs](docs/media/mobile_robot_ros2/07-ros2-graphs-overview.png)
+*The OmniGraph nodes and ROS 2 topics of the four robot families (topics the USD leaves unset show the node defaults).*
+
 ### About B: Nav2 two-Carter warehouse
 
 This sub-project follows NVIDIA's "Simulation Interfaces" lesson (Going Further With Robotics, multi-robot scene workflows). A ROS 2 script uses Isaac Sim's simulation-interfaces services (`load_world`, `spawn_entity`, `get_entity_state`, `set_entity_state`, `set_simulation_state`, `unload_world`) to build the warehouse scene, spawn a table, a cube and a Nova Carter (`carter1`), and then lets Nav2 drive the Carter to the table while a Limo is spawned on the table to push the cube off (two trials). The script is NVIDIA's (`workshop_learning_script_final.py`, outside this repo, run unmodified). The Nav2 side is `ros_ws/src/carter_navigation/`: a namespaced two-robot launch (`carter1`, `carter2`), per-robot params, a map of the scene and RViz configs. The recording below is a headless Isaac Sim run of that lesson with Nav2 started without RViz; only `carter1` is spawned by the lesson script, so the `carter2` Nav2 stack runs without a robot. The sequence is about 59 s of simulation time, played here at 4x. Known issue: `scripts/launch_nav2_pipeline.sh` and `startup_nav2.py` open `.../Collected_warehouse_test_scene/warehouse_test_scene.usd`, but the folder is `warehouse_test_scene/`, and the shell script looks for `startup_nav2.py` in `scripts/` while it is in the repo root, so they do not start as written. The capture used its own startup (`docs/capture/run_nav2_lesson.sh`).
@@ -31,6 +56,21 @@ This sub-project follows NVIDIA's "Simulation Interfaces" lesson (Going Further 
 
 ![Cube pushed off](docs/media/nav2_two_carter/03-cube-pushed-carter-leaves.png)
 *The cube is gone from the table and the Carter drives to its drop-off pose.*
+
+![Warehouse test scene](docs/media/nav2_two_carter/04-warehouse-overview.png)
+*`warehouse_test_scene.usd`: the warehouse with a demo table, forklifts and one of the Nova Carters (rendered headless, scene not saved).*
+
+![Nova Carter 1](docs/media/nav2_two_carter/05-carter1.png) ![Nova Carter 2](docs/media/nav2_two_carter/05-carter2.png)
+*The two Nova Carters in the scene (`/World/nova_carter_ROS_1` and `_2`), namespaced `carter1` and `carter2` in ROS 2.*
+
+![Scene camera 1](docs/media/nav2_two_carter/06-scene-camera1.png) ![Scene camera 2](docs/media/nav2_two_carter/06-scene-camera2.png)
+*The scene's own `Camera1` and `Camera2` views of the two robot areas.*
+
+![Nav2 map](docs/media/nav2_two_carter/07-nav2-map.png)
+*The occupancy map Nav2 localizes and plans on (`ros_ws/src/carter_navigation/maps/warehouse_test_scene.png`, 0.05 m per pixel).*
+
+![Nav2 topic graph](docs/media/nav2_two_carter/08-nav2-ros-graph.png)
+*Topics per robot: the 3D lidar point cloud goes through `pointcloud_to_laserscan` into the Nav2 costmaps, and Nav2 sends `cmd_vel` back (from the launch file and params). The repo's saved TF dump (`ros_ws/frames_*.pdf`) only says "No tf data received", so no TF tree is shown.*
 
 ### About C: H1 humanoid
 
