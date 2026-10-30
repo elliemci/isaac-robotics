@@ -16,6 +16,22 @@ A collection of NVIDIA Isaac Sim, Isaac Lab, Isaac ROS and Omniverse projects, m
 | F | **Physical AI Agent Bootcamp apps (Attic Portal)** | A browser-streamed RTX viewer (ovrtx + ovstream) that grows into the SimReady physics missions: validate a scene, apply guarded fixes (rule `RB.MB.001`), build a physics-ready stage, and a user-controlled Play. Includes two agent skills, `prepare-physics-rehearsal` and `physics-picker-experience`. | `physical_ai_agent/SimReadyPhysics/` (newest: Mission USDAs, `Attic_Portal/server/r17_*.py`, `scripts/apply_and_verify_mission*.sh`, `skills/`), `physical_ai_agent/RTXViewport/Attic_Portal` | `cd physical_ai_agent/SimReadyPhysics/Attic_Portal && source env.sh && ./scripts/restart.sh`. Health check: `curl http://127.0.0.1:8081/healthz`. Needs the course material bundle unpacked locally (see below). | [Physical AI Agent Bootcamp](https://docs.nvidia.com/learning/physical-ai/physical-ai-agent-bootcamp/latest/index.html) |
 | G | **ovrtx (vendored)** | NVIDIA's open-source ovrtx 0.3.0 renderer, copied in unmodified. Used by F. | `physical_ai_agent/ovrtx/` | See `physical_ai_agent/ovrtx/README.md`. | [NVIDIA-Omniverse/ovrtx](https://github.com/NVIDIA-Omniverse/ovrtx) |
 
+### About E: Isaac Lab training
+
+`isaaclab_training/` is an out-of-tree Isaac Lab package. Importing it registers two tasks with Gymnasium: `Template-Cartpole-v0` (the stock cartpole setup, trained as a first check of the workflow) and `Template-UR10-Reach-v0`, a UR10 with a gripper (`reach/ur_gripper.py`, `UR-with-gripper.usd`) that must move its end effector to a commanded pose. The reach task is the part I changed: custom reward shaping (`reach/mdp/rewards.py`, position error with tanh and fine-grained variants) and a curriculum in `reach/reach_env_cfg.py`. Both tasks train with skrl PPO through `workflows/train_skrl.py` and replay with `workflows/play_skrl.py`. `isaac_training/reach/` is the unmodified NVIDIA project template, kept for reference. Runs and checkpoints are in `logs/skrl/` (1 cartpole run, 10 reach runs).
+
+![Cartpole policy](docs/media/isaac_lab_training/cartpole-rollout.gif)
+*Template-Cartpole-v0: the trained `best_agent.pt` balancing the pole in 4 parallel environments.*
+
+![UR10 reach policy](docs/media/isaac_lab_training/reach-rollout.gif)
+*Template-UR10-Reach-v0: the latest run's `best_agent.pt` driving the UR10 towards the commanded pose (frame marker).*
+
+![Reach early vs best checkpoint](docs/media/isaac_lab_training/04-reach-early-checkpoint.png) ![Reach best checkpoint](docs/media/isaac_lab_training/02-reach-best-policy.png)
+*The same task at `agent_2400.pt` (left) and `best_agent.pt` (right) of run `2026-07-01_17-38-45`.*
+
+![Reach training curves](docs/media/isaac_lab_training/03-reach-training-curves.png)
+*Latest reach run: total reward rises from about -1.94 to -1.62 over 18000 timesteps; the position-tracking term is still the dominant penalty, so the policy is not fully converged.*
+
 ### About F: what is mine and what came from the course
 
 The R-17 interface was built with the Claude Code agent, guided by the course's mission steps and their prompt contracts (`Goal:`, `Skills:`, `Context:`, `Done when:`) and library skills (ovrtx, ovstream, OpenUSD). The starter code was `physical_ai_agent/RTXViewport/Attic_Portal`. The author of the Attic Portal scene USD layer references is `agoldstein`.
