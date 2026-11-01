@@ -1,0 +1,8 @@
+# Generated data, converted datasets and trained models are not tracked (see "About D" in the root README).
+palletjack_sdg/palletjack_data/
+cloud/training/tao/tfrecords/
+cloud/training/tao/pretrained_model/
+cloud/training/tao/detectnet_v2/
+cloud/.venv/
+**/.ipynb_checkpoints/
+images/loco_palletjacks/
