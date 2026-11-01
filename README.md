@@ -171,6 +171,21 @@ Course structure as I understand it:
 ![Physics rehearsal](docs/media/physical_ai_agent/physics.gif)
 *Mission 4: user-controlled PLAY on the physics-ready stage (2 rigid bodies, 11 colliders), the cube drops towards the pod.*
 
+### Note: Isaac ROS Immage Segmentation
+
+The last part of NVIDIA's [Developing Robots With Software-in-the-Loop in Isaac Sim](https://docs.nvidia.com/learning/physical-ai/getting-started-with-isaac-sim/latest/developing-robots-with-sil-in-isaac-sim/index.html) module: [Image Segmentation Without Simulation](https://docs.nvidia.com/learning/physical-ai/getting-started-with-isaac-sim/latest/developing-robots-with-sil-in-isaac-sim/06-image-segmentation-without-simulation.html) and [With Simulation](https://docs.nvidia.com/learning/physical-ai/getting-started-with-isaac-sim/latest/developing-robots-with-sil-in-isaac-sim/07-image-segmentation-with-sil.html). I did the setup in May 2026 (Isaac ROS container, PeopleSemSegNet model converted to a TensorRT plan, sample rosbag), but I never saved a segmented output and the container is gone, and nothing from it is in this repo. The tutorial targets Isaac Sim 4.2.0 and ROS 2 Humble; adjust paths and versions for the next install.
+
+**Setup:**
+- Isaac ROS dev container (`isaac_ros_common`, `run_dev.sh`) with `isaac_ros_unet`. Install the PeopleSemSegNet model with `isaac_ros_peoplesemseg_models_install` and convert it to a TensorRT `model.plan` in `isaac_ros_assets/` (rebuild it on every new GPU or TensorRT version). My earlier install script had a `/worspaces/` typo that needed a `sed` fix; check whether it still exists.
+- Isaac Sim with the ROS 2 bridge: `RMW_IMPLEMENTATION=rmw_fastrtps_cpp`, and add the bridge's `humble/lib` folder to `LD_LIBRARY_PATH` once per terminal.
+
+**Run (with simulation):**
+1. Start Isaac Sim and open Isaac Examples > ROS2 > Isaac ROS > Sample Scene (people, forklift, Carter with a camera). Press Play and check that `/front_stereo_camera/left/image_rect_color` appears in `ros2 topic list`.
+2. In the container: `ros2 launch isaac_ros_unet isaac_ros_unet_tensor_rt_isaac_sim.launch.py engine_file_path:=<isaac_ros_assets>/models/peoplesemsegnet/.../model.plan input_binding_names:="['input_1:0']"`, and wait for "Node was started".
+3. In a second container terminal run `rqt_image_view`: the input camera shows the scene and the segmentation topic shows people as a red mask. Move a person in the scene and the mask follows.
+
+**Without simulation:** same steps, but play the quickstart rosbag (about 30 `/image_raw` frames) instead of Isaac Sim. To keep proof this time, take a screenshot of `rqt_image_view` or run `ros2 bag record` on the segmentation topic and check that the bag is not empty.
+
 ## Shared folders
 
 | Folder | Used by |
